@@ -1,6 +1,12 @@
-﻿body {
-    padding-top: 50px;
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 70px;
     padding-bottom: 20px;
+    background-color: #F4F4F4;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,3 +28,45 @@ select,
 textarea {
     max-width: 280px;
 }
+
+form {
+    margin: 0 auto;
+}
+
+.box-form {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 20px;
+    margin-top: 50px;
+}
+
+    .box-form h4 {
+        background-color: #6498FE;
+        margin: -20px;
+        padding: 20px;
+        color: #ffffff;
+    }
+
+.input-group .form-control {
+    padding: 20px 10px;
+}
+.navbar-default li a {
+    transition: 200ms;
+}
+.navbar-default li a:hover, .navbar-default li a:focus, .navbar-default li.active a{
+    background-color: #636d80  !important;
+    color: #ffffff !important;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2f3a4e;
+}
+
+    footer a {
+        color: #ffffff;
+    }

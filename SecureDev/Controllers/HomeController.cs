@@ -15,9 +15,16 @@ namespace Vladi2.Controllers
         public ActionResult Index()
         {
             HttpCookie SID = HttpContext.Request.Cookies["SID"];
-            if (SID==null || Session["myUser"] == null || SID.Value != HttpContext.Session.SessionID)
+            if (SID == null || Session["myUser"] == null || SID.Value != HttpContext.Session.SessionID)
                 return RedirectToAction("Index", "Login");
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Response.Cookies.Add(new HttpCookie("SID") { Expires = DateTime.Now.AddDays(-1) });
+            Session.Clear();
+            return RedirectToAction("Index", "Login");
         }
     }
 }
