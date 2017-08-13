@@ -16,5 +16,7 @@ namespace Vladi2.Models
         public string Phone { get; set; }
         public string PictureUrl { get; set; }
         public bool IsAdmin { get; set; }
+        public int CountsAttempts { get; set; }
+        public DateTime LastAttempt { get; set; }
     }
 }

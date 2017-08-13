@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Vladi2.Models;
@@ -20,30 +21,79 @@ namespace Vladi2.Controllers
         [HttpPost]
         public ActionResult Index(User user)
         {
+            if(String.IsNullOrEmpty(user.UserName) || String.IsNullOrEmpty(user.Password))
+            {
+                ViewBag.ErrorMsg = "Please enter user name and password!";
+                return View();
+            }
             var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
             using (var m_dbConnection = new SQLiteConnection(connectionString))
             {
                 m_dbConnection.Open();
-                //TODO:add paramaters instead the SQL INJECTION
-                using (SQLiteCommand command = new SQLiteCommand("SELECT * FROM Users Where userName = '" + user.UserName + "' and password = '" + user.Password+ "'", m_dbConnection))
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (SQLiteCommand LoginCommand = new SQLiteCommand("SELECT id,username,password,firstname,lastname,isadmin,logincounts,lastattempt FROM Users Where userName = @username", m_dbConnection))
                 {
-                    while (reader.Read())
+                    LoginCommand.Parameters.Add(new SQLiteParameter("username", user.UserName));
+                    using (SQLiteDataReader reader = LoginCommand.ExecuteReader())
                     {
-                        User myUser = new User()
+                        while (reader.Read())
                         {
-                            UserID = reader.GetInt32(0),
-                            FirstName = reader.GetString(1),
-                            LastName = reader.GetString(2)
-                        };
-                        Session["myUser"] = myUser;
-                        HttpContext.Response.SetCookie(new HttpCookie("SID", HttpContext.Session.SessionID));
-                        return RedirectToAction("Index", "Home");
+                            User myUser = new User()
+                            {
+                                UserID = int.Parse(reader["id"].ToString()),
+                                UserName = reader["username"].ToString(),
+                                Password = reader["password"].ToString(),
+                                FirstName = reader["firstname"].ToString(),
+                                LastName = reader["lastname"].ToString(),
+                                IsAdmin = reader["isadmin"].ToString() == "1",
+                                CountsAttempts = int.Parse(reader["logincounts"].ToString()),
+                                LastAttempt = DateTime.Parse(reader["lastattempt"].ToString())
+                            };
+
+                            if (myUser.CountsAttempts < 5 || (DateTime.Now - myUser.LastAttempt).TotalMinutes>=20)
+                            {
+                                if (sha256(user.Password) == myUser.Password)//SHA256
+                                {                                 
+                                    //clear unseccess attempts
+                                    using (SQLiteCommand clearUnseccess = new SQLiteCommand("update users set logincounts = 0, lastattempt = datetime('now', 'localtime') where username = @username", m_dbConnection))
+                                    {
+                                        clearUnseccess.Parameters.Add(new SQLiteParameter("username", user.UserName));
+                                        clearUnseccess.ExecuteNonQuery();
+                                    }
+                                    Session["myUser"] = myUser;
+                                    HttpContext.Response.SetCookie(new HttpCookie("SID", HttpContext.Session.SessionID));
+                                    return RedirectToAction("Index", "Home");
+                                }
+                                else
+                                {
+                                    //Update Unseccessful attempts
+                                    using (SQLiteCommand AttemptsCommand = new SQLiteCommand("update users set logincounts = (select logincounts +1 from users where username = @username), lastattempt = datetime('now', 'localtime') where username = @username", m_dbConnection))
+                                    {
+                                        AttemptsCommand.Parameters.Add(new SQLiteParameter("username", user.UserName));
+                                        AttemptsCommand.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ViewBag.ErrorMsg = "You got banned! Please wait 20 minutes";
+                                return View();
+                            }
+                        }
                     }
                 }
             }
             ViewBag.ErrorMsg = "User name or Password is incorrect";
             return View();
+        }
+
+        string sha256(string password)
+        {
+            System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
+            string hash = "";
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password));
+            foreach (byte theByte in crypto)
+                hash += theByte.ToString("X2");
+            return hash;
         }
     }
 }
