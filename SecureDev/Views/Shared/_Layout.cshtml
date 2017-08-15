@@ -30,7 +30,7 @@
                     <li>@Html.ActionLink("Store","Index","Store")</li>
                     <li><a href="#">Cart</a></li>
                     <li><a href="#">Forum</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
                     @if ((Session["myUser"] as User).IsAdmin)
                     {
                         <li><a href="#">Admin</a></li>

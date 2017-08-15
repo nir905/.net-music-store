@@ -163,3 +163,51 @@ footer {
     background-color: #ed0677;
     color: #ffffff;
 }
+
+/*lion and maria CSS code*/
+
+
+.user-row {
+    margin-bottom: 14px;
+}
+
+    .user-row:last-child {
+        margin-bottom: 0;
+    }
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+    .dropdown-user:hover {
+        cursor: pointer;
+    }
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+    .table-user-information > tbody > tr:first-child {
+        border-top: 0;
+    }
+
+
+    .table-user-information > tbody > tr > td {
+        border-top: 0;
+    }
+
+.toppad {
+    margin-top: 20px;
+}
+
+    
+.box-form1 {
+    background-color: #ffffff;
+    width: 45%;
+    max-width: 430px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 20px;
+    padding-top: unset;
+}
