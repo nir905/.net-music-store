@@ -13,6 +13,7 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 35px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -52,13 +53,15 @@ form {
 .input-group .form-control {
     padding: 20px 10px;
 }
+
 .navbar-default li a {
     transition: 200ms;
 }
-.navbar-default li a:hover, .navbar-default li a:focus, .navbar-default li.active a{
-    background-color: #636d80  !important;
-    color: #ffffff !important;
-}
+
+    .navbar-default li a:hover, .navbar-default li a:focus, .navbar-default li.active a {
+        background-color: #636d80 !important;
+        color: #ffffff !important;
+    }
 
 footer {
     position: absolute;
@@ -70,3 +73,93 @@ footer {
     footer a {
         color: #ffffff;
     }
+
+
+
+/*search box*/
+#custom-search-input {
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+    #custom-search-input input {
+        border: 0;
+        box-shadow: none;
+    }
+
+    #custom-search-input button {
+        margin: 2px 0 0 0;
+        background: none;
+        box-shadow: none;
+        border: 0;
+        color: #666666;
+        padding: 0 8px 0 10px;
+        border-left: solid 1px #ccc;
+    }
+
+        #custom-search-input button:hover {
+            border: 0;
+            box-shadow: none;
+            border-left: solid 1px #ccc;
+        }
+
+    #custom-search-input .glyphicon-search {
+        font-size: 23px;
+    }
+
+.disc {
+    float: left;
+    margin: 10px 17px 10px 3px;
+    background-color: #ffffff;
+    width: 243px;
+    height: 430px;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
+}
+
+.disc-img {
+    width: 243px;
+    height: 217px;
+    background-size: cover;
+}
+
+.disc-title {
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px 10px 0 10px;
+}
+
+.disc-artist {
+    font-size: 16px;
+    padding: 1px 10px;
+}
+
+.disc-price {
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px 10px 0 10px;
+}
+
+.disc-category {
+    font-size: 13px;
+    padding: 0 10px;
+}
+
+.add-to-cart {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    width: 87%;
+    border: 2px solid #ED0677;
+    background-color: #ffffff;
+    padding: 10px;
+    outline: none;
+    font-size: 13px;
+    transition: 200ms;
+}
+.add-to-cart:hover {
+    background-color: #ed0677;
+    color: #ffffff;
+}

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Vladi2.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -25,12 +26,15 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Store</a></li>
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Store","Index","Store")</li>
                     <li><a href="#">Cart</a></li>
                     <li><a href="#">Forum</a></li>
                     <li><a href="#">Profile</a></li>
-                    <li><a href="#">Admin</a></li>
+                    @if ((Session["myUser"] as User).IsAdmin)
+                    {
+                        <li><a href="#">Admin</a></li>
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Logout","Logout","Home")</li>
@@ -61,5 +65,14 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    
+<script>
+    $(document).ready(function () {
+        $('li').each(function(){
+               $(this).removeClass('active');
+        });
+        $('ul.nav.navbar-nav').find('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+});
+</script>
 </body>
 </html>

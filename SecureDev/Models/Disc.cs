@@ -13,7 +13,7 @@ namespace Vladi2.Models
         public DateTime DiscAdded { get; set; }
         public Category Category { get; set; }
         public string PictureUrl { get; set; }
-        public float price { get; set; }
+        public float Price { get; set; }
         public string Duration { get; set; }
         public int SongsAmount { get; set; }
     }
