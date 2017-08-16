@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Security.Application;
+using Vladi2.Helpers;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
@@ -21,7 +23,10 @@ namespace Vladi2.Controllers
         [HttpPost]
         public ActionResult Index(User user)
         {
-            if(String.IsNullOrEmpty(user.UserName) || String.IsNullOrEmpty(user.Password))
+            user.UserName = Sanitizer.GetSafeHtmlFragment(user.UserName);
+            user.Password = Sanitizer.GetSafeHtmlFragment(user.Password);
+
+            if (String.IsNullOrEmpty(user.UserName) || String.IsNullOrEmpty(user.Password))
             {
                 ViewBag.ErrorMsg = "Please enter user name and password!";
                 return View();
@@ -54,7 +59,7 @@ namespace Vladi2.Controllers
 
                             if (myUser.CountsAttempts < 5 || (DateTime.Now - myUser.LastAttempt).TotalMinutes>=20)
                             {
-                                if (sha256(user.Password) == myUser.Password)//SHA256
+                                if (UserValidation.sha256(user.Password) == myUser.Password)//SHA256
                                 {                                 
                                     //clear unseccess attempts
                                     using (SQLiteCommand clearUnseccess = new SQLiteCommand("update users set logincounts = 0, lastattempt = datetime('now', 'localtime') where username = @username", m_dbConnection))
@@ -89,14 +94,5 @@ namespace Vladi2.Controllers
             return View();
         }
 
-        string sha256(string password)
-        {
-            System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
-            string hash = "";
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password));
-            foreach (byte theByte in crypto)
-                hash += theByte.ToString("X2");
-            return hash;
-        }
     }
 }

@@ -4,17 +4,19 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Security.Application;
 using Vladi2.App_Start;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
 {
     [AuthAttr]
-    public class StoreController : Controller
+    public class StoreController : BaseController
     {
         // GET: Store
         public ActionResult Index(string q = null)
         {
+            q = Sanitizer.GetSafeHtmlFragment(q);
             ViewBag.Search = q;
             List<Disc> list = new List<Disc>();
             var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));

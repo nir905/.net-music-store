@@ -212,3 +212,12 @@ footer {
     padding: 20px;
     padding-top: unset;
 }
+
+
+.user-img {
+    width: 150px;
+    height: 150px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+}

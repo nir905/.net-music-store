@@ -24,7 +24,9 @@
                     
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-5 col-lg-5 " align="center"> <img alt="User Pic" src="@Url.Content(((User)Session["myUser"]).PictureUrl)" class="img-circle img-responsive">  </div>
+                            <div class="col-md-5 col-lg-5 " align="center">
+                                <div class="user-img" style="background-image: url('@Url.Content(((User) Session["myUser"]).PictureUrl)')"></div>
+                            </div>
                             <div class="col-md-5 col-lg-5 " align="right" style="padding-top: 50px;">   
                                 <input type="file" name="file" id="file" style="width: 200px;"/>
                             </div>
@@ -118,7 +120,7 @@
                                             <td>
                                                 <div class="form-group">
                                                     <div class="col-md-offset-4 col-md-0 col-lg-0 ">
-                                                        <input type="button" value="Cancel" class="btn btn-danger btn-block" onclick="location.href='@Url.Action("Index", "Profile")'" />
+                                                        @Html.ActionLink("Cancel","Index","Profile",null, new { @class = "btn btn-danger btn-block" })
                                                     </div>
                                                 </div>
                                            </td>
