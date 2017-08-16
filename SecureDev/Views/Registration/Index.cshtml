@@ -1,0 +1,175 @@
+﻿@using Vladi2.Models
+@model User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sign Up</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="padding-top: 20px">
+    @using (Html.BeginForm("Index", "Registration", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "box-form1" }))
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-20 col-sm-20 col-md-13 col-lg-13 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Create Account</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5 col-lg-5 " align="center"> <img alt="User Pic" src="~/ProfileImages/default-user.png" class="img-circle img-responsive">  </div>
+                                <div class="col-md-5 col-lg-5 " align="right" style="padding-top: 50px;">
+                                    <input type="file" name="file" id="file" style="width: 200px;" />
+                                </div>
+
+                                <div class=" col-md-20 col-lg-20 ">
+                                    <table class="table table-user-information">
+                                        <tbody>
+                                            @if (ViewBag.imageErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.imageErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>Nickname:</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @Value = Model.UserName } })
+                                                </td>
+                                            </tr>
+                                            @if (ViewBag.userNameErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.userNameErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>Password:</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @Value = Model.Password } })
+                                                </td>
+                                            </tr>
+                                            @if (ViewBag.passwordErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.passwordErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>First Name:</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @Value = Model.FirstName } })
+                                                </td>
+                                            </tr>
+                                            @if (ViewBag.firstNameErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.firstNameErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>Last Name:</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @Value = Model.LastName } })
+                                                </td>
+                                            </tr>
+                                            @if (ViewBag.lastNameErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.lastNameErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>Email:</td>
+                                                <td>@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @Value = Model.Email } })</td>
+                                            </tr>
+
+                                            @if (ViewBag.emailErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.emailErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            <tr>
+                                                <td>Phone Number:</td>
+                                                <td>@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @Value = Model.Phone } })</td>
+                                            </tr>
+
+                                            @if (ViewBag.phoneErr != null)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="alert alert-danger">
+                                                            @ViewBag.phoneErr
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="col-md-offset-0 col-md-0 col-lg-0 ">
+                                                            <input type="submit" value="Create" class="btn btn-primary btn-block" />
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="col-md-offset-4 col-md-0 col-lg-0 ">
+                                                            <input type="button" value="Cancel" class="btn btn-danger btn-block" onclick="location.href='@Url.Action("Index", "Login")'" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
