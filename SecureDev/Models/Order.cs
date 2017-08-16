@@ -10,7 +10,7 @@ namespace Vladi2.Models
         public int OrderID { get; set; }
         public int UserID { get; set; }
         private DateTime OrderTime { get; set; }
-        public int DiscID { get; set; }
+        public Disc Disc{ get; set; }
         public int Amount { get; set; }
         public string Address { get; set; }
         public string City { get; set; }

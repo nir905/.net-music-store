@@ -124,6 +124,7 @@ footer {
     width: 243px;
     height: 217px;
     background-size: cover;
+    background-position: center;
 }
 
 .disc-title {
@@ -148,7 +149,7 @@ footer {
     padding: 0 10px;
 }
 
-.add-to-cart {
+a.view-disc {
     position: absolute;
     bottom: 12px;
     left: 16px;
@@ -159,8 +160,13 @@ footer {
     outline: none;
     font-size: 13px;
     transition: 200ms;
+    text-decoration: none;
+    text-align: center;
+    color: #000000;
+    cursor: pointer;
 }
-.add-to-cart:hover {
+
+.view-disc:hover {
     background-color: #ed0677;
     color: #ffffff;
 }
@@ -203,7 +209,7 @@ footer {
     margin-top: 20px;
 }
 
-    
+
 .box-form1 {
     background-color: #ffffff;
     width: 45%;
@@ -220,4 +226,83 @@ footer {
     background-position: center;
     background-size: cover;
     border-radius: 50%;
+}
+
+.large-details .disc-img {
+    width: 340px;
+    height: 327px;
+    background-position: center;
+}
+
+.large-details .disc-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.large-details .disc-artist {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.large-details .disc-price {
+    font-size: 22px;
+}
+
+.large-details .disc-category {
+    font-size: 17px;
+    padding: 4px;
+}
+
+
+.add-to-cart {
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+     white-space:nowrap;
+    display: inline-block;
+}
+.add-to-cart span {
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    text-align: left;
+}
+.pick-number {
+    margin: 5px 0px;
+}
+.box-number {
+    display: inline-block;
+    border: 1px solid #D3D6D9;
+    margin-right: -5px;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+.box-number.action {
+    color: #ed0677;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+.add-to-cart-button {
+    background-color: #ED0677;
+    border: 2px solid #ED0677;
+    color: #fff;
+    display: inline-block;
+    padding: 11px 0;
+    width: 100%;
+    margin: 10px 0;
+    font-weight: bold;
+    transition: 200ms;
+}
+.add-to-cart-button:hover,.add-to-cart-button:focus {
+    background-color: #3D3D3D;
+    border-color: #3D3D3D;
+}
+
+td .disc-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 3px;
 }

@@ -59,5 +59,68 @@ namespace Vladi2.Controllers
             }
             return View(list);
         }
+
+        public ActionResult ViewDisc(int id)
+        {
+            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            {
+                m_dbConnection.Open();
+                SQLiteCommand discCdCommand =
+                    new SQLiteCommand(
+                        @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price,added,duration,songsamount from Disc 
+                                INNER JOIN Category on Category.categoryid = Disc.categoryid where discid=@discid",
+                        m_dbConnection);
+                discCdCommand.Parameters.Add(new SQLiteParameter("discid", id));
+                using (SQLiteDataReader reader = discCdCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return View(new Disc()
+                        {
+                            DiscID = int.Parse(reader["discid"].ToString()),
+                            Name = reader["name"].ToString(),
+                            Artist = reader["artist"].ToString(),
+                            Category = new Category() { CategoryName = reader["categoryname"].ToString() },
+                            PictureUrl = reader["pictureurl"].ToString(),
+                            Price = float.Parse(reader["price"].ToString()),
+                            DiscAdded = Convert.ToDateTime(reader["added"].ToString()),
+                            Duration = reader["duration"].ToString(),
+                            SongsAmount = int.Parse(reader["songsamount"].ToString())
+                        });
+                    }
+                }
+            }
+            return new HttpNotFoundResult("Disc Not Found");
+        }
+
+        public ActionResult AddToCart(int DiscID, int number)
+        {
+            try
+            {
+                int LastDiscId = Convert.ToInt32((HttpContext.Request.Headers["Referer"].Split('/'))[5]);
+                if (LastDiscId == DiscID)
+                {
+                    if(number<1 || number>10)
+                        return RedirectToAction("Index", "Store");
+
+                    var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                    using (var m_dbConnection = new SQLiteConnection(connectionString))
+                    {
+                        m_dbConnection.Open();
+                        SQLiteCommand storeCdCommand = new SQLiteCommand(@"insert into Orders (userId,orderTime,discID,amount,isBought) values (@userid,datetime('now', 'localtime'),@discid,@amount,0)",m_dbConnection);
+                        storeCdCommand.Parameters.Add(new SQLiteParameter("userid", ((User) Session["myUser"]).UserID));
+                        storeCdCommand.Parameters.Add(new SQLiteParameter("discid", DiscID));
+                        storeCdCommand.Parameters.Add(new SQLiteParameter("amount", number));
+                        storeCdCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Index", "Store");
+            }
+            return RedirectToAction("Index", "Store");
+        }
     }
 }

@@ -29,7 +29,7 @@
         <div class="disc-artist">@disc.Artist</div>
         <div class="disc-price">£@disc.Price</div>
         <div class="disc-category">@disc.Category.CategoryName</div>
-        <button class="add-to-cart">ADD TO CART</button>
+        @Html.ActionLink("VIEW DISC","ViewDisc","Store", new { id=disc.DiscID }, new {@class="view-disc"})
     </div>
 }
 @if (!Model.Any())
