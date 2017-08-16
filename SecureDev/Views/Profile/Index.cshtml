@@ -1,4 +1,5 @@
 ﻿@using Vladi2.Models
+@model User
 
 <!DOCTYPE html>
 
@@ -10,44 +11,39 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
- 
-        @{ User userDetails = (User)HttpContext.Current.Session["myUser"]; }
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
                 <div class="panel panel-info">
                     <div class="panel-heading row" style="margin-right: 0px; margin-left: 0px;">
                         <div class="col-xs-6">
-                            <h3 class="panel-title" style="padding-top: 7px;"><strong>Hello @userDetails.UserName</strong></h3>
+                            <h3 class="panel-title" style="padding-top: 7px;"><strong>My Profile</strong></h3>
                         </div>
-                        <div  class="col-xs-6 text-right" style="padding-left: 0px; padding-right: 0px;">
-                            <a href="@Url.Action("Index","EditProfile")" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                         <div class="col-xs-6 text-right" style="padding-left: 0px; padding-right: 0px;">
+                             <a href="@Url.Action("Index","EditProfile")" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                          </div>
                         </div>
-                        </div>
-                    @*<div class="btn-pos">
-                        
-                    </div>*@
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
+                            <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@Url.Content(Model.PictureUrl)" class="img-circle img-responsive"> </div>
                             <div class=" col-md-9 col-lg-9 ">
                                 <table class="table table-user-information">
                                     <tbody>
                                         <tr>
                                             <td>First Name:</td>
-                                            <td>@userDetails.FirstName</td>
+                                            <td>@Model.FirstName</td>
                                         </tr>
                                         <tr>
                                             <td>Last Name:</td>
-                                            <td>@userDetails.LastName</td>
+                                            <td>@Model.LastName</td>
                                         </tr>
                                         <tr>
                                             <td>Email</td>
-                                            <td>@userDetails.Email</td>
+                                            <td>@Model.Email</td>
                                         </tr>
                                         <tr>
                                             <td>Phone Number</td>
-                                            <td>@userDetails.Phone</td>
+                                            <td>@Model.Phone</td>
                                         </tr>
 
                                     </tbody>

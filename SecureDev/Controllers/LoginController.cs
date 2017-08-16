@@ -30,7 +30,7 @@ namespace Vladi2.Controllers
             using (var m_dbConnection = new SQLiteConnection(connectionString))
             {
                 m_dbConnection.Open();
-                using (SQLiteCommand LoginCommand = new SQLiteCommand("SELECT id,username,password,firstname,lastname,isadmin,logincounts,lastattempt FROM Users Where userName = @username", m_dbConnection))
+                using (SQLiteCommand LoginCommand = new SQLiteCommand("SELECT id,username,password,firstname,lastname,isadmin,logincounts,lastattempt,email,phone,pictureUrl FROM Users Where userName = @username", m_dbConnection))
                 {
                     LoginCommand.Parameters.Add(new SQLiteParameter("username", user.UserName));
                     using (SQLiteDataReader reader = LoginCommand.ExecuteReader())
@@ -43,10 +43,13 @@ namespace Vladi2.Controllers
                                 UserName = reader["username"].ToString(),
                                 Password = reader["password"].ToString(),
                                 FirstName = reader["firstname"].ToString(),
+                                Email = reader["email"].ToString(),
+                                Phone = reader["phone"].ToString(),
                                 LastName = reader["lastname"].ToString(),
                                 IsAdmin = reader["isadmin"].ToString() == "1",
                                 CountsAttempts = int.Parse(reader["logincounts"].ToString()),
-                                LastAttempt = DateTime.Parse(reader["lastattempt"].ToString())
+                                LastAttempt = DateTime.Parse(reader["lastattempt"].ToString()),
+                                PictureUrl = reader["pictureUrl"].ToString()
                             };
 
                             if (myUser.CountsAttempts < 5 || (DateTime.Now - myUser.LastAttempt).TotalMinutes>=20)

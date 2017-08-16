@@ -12,9 +12,7 @@
 </head>
 <body>
 
-    @{ User userDetails = (User)ViewData["tempUser"]; }
-
-@using (Html.BeginForm("Index", "EditProfile", FormMethod.Post, new { @class = "box-form1"}))
+@using (Html.BeginForm("Index", "EditProfile", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "box-form1"}))
 { 
     <div class="container">
         <div class="row">
@@ -26,14 +24,28 @@
                     
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-5 col-lg-5 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
+                            <div class="col-md-5 col-lg-5 " align="center"> <img alt="User Pic" src="@Url.Content(((User)Session["myUser"]).PictureUrl)" class="img-circle img-responsive">  </div>
+                            <div class="col-md-5 col-lg-5 " align="right" style="padding-top: 50px;">   
+                                <input type="file" name="file" id="file" style="width: 200px;"/>
+                            </div>
+                            
                             <div class=" col-md-20 col-lg-20 ">
                                 <table class="table table-user-information">
                                     <tbody >
+                                        @if (ViewBag.imageErr != null)
+                                        {
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class="alert alert-danger">
+                                                        @ViewBag.imageErr
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
                                         <tr>
                                             <td>First Name:</td>
                                             <td>
-                                             @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @Value = userDetails.FirstName } })
+                                             @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @Value = Model.FirstName } })
                                             </td>
                                         </tr>
                                             @if (ViewBag.firstNameErr != null)
@@ -49,7 +61,7 @@
                                         <tr>
                                             <td>Last Name:</td>
                                             <td>
-                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @Value = userDetails.LastName } })
+                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @Value = Model.LastName } })
                                             </td>
                                         </tr>
                                         @if (ViewBag.lastNameErr != null)
@@ -64,7 +76,7 @@
                                         }
                                         <tr>
                                             <td>Email:</td>
-                                            <td>@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @Value = userDetails.Email } })</td>
+                                            <td>@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @Value = Model.Email } })</td>
                                         </tr>
 
                                         @if (ViewBag.emailErr != null)
@@ -80,7 +92,7 @@
 
                                         <tr>
                                             <td>Phone Number:</td>
-                                            <td>@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @Value = userDetails.Phone } })</td>
+                                            <td>@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @Value = Model.Phone } })</td>
                                         </tr>
 
                                         @if (ViewBag.phoneErr != null)
