@@ -162,6 +162,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\UserValidation.cs" />
+    <Compile Include="Models\CartVM.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Disc.cs" />
@@ -213,6 +214,7 @@
     <Content Include="Views\Forum\ReadTopic.cshtml" />
     <Content Include="Views\Store\ViewDisc.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Cart\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

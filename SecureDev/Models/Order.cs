@@ -16,5 +16,6 @@ namespace Vladi2.Models
         public string City { get; set; }
         public string Country { get; set; }
         public bool IsBought { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

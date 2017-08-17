@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Vladi2.Models.Order>
+﻿@model Vladi2.Models.CartVM
 
 @{
     ViewBag.Title = "Index";
@@ -6,54 +6,87 @@
 }
 
 <h2>Cart</h2>
-
-<table class="table">
-    <tr>
-        <th></th>
-        <th>
-            Disc
-        </th>
-        <th>
-            Category
-        </th>
-        <th>
-            Amount
-        </th>
-        <th>
-            Total Price
-        </th>
-        <th></th>
-    </tr>
-    @if (Model.Count() > 0)
-    {
-        foreach (var item in Model)
+@if (!string.IsNullOrEmpty(ViewBag.msg))
+{
+    <div class="alert alert-danger">
+        @ViewBag.msg
+    </div>
+}
+@using (Html.BeginForm("ShipCart", "Cart", FormMethod.Post))
+{
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                Disc
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th></th>
+        </tr>
+        @for (var i = 0; i < Model.Orders.Count; i++)
         {
             <tr>
                 <td>
-                    <div class="disc-img" style="background-image: url('@Url.Content("~/CD_Images/" + @item.Disc.PictureUrl)')"></div>
+                    <div class="disc-img" style="background-image: url('@Url.Content("~/CD_Images/" + @Model.Orders[i].Disc.PictureUrl)')"></div>
                 </td>
                 <td>
-                    <b>@Html.DisplayFor(modelItem => item.Disc.Name)</b>
-                    <p>@Html.DisplayFor(modelItem => item.Disc.Artist)</p>
+                    <b>@Html.DisplayFor(modelItem => Model.Orders[i].Disc.Name)</b>
+                    <p>@Html.DisplayFor(modelItem => Model.Orders[i].Disc.Artist)</p>
+                    @Html.HiddenFor(modelItem => Model.Orders[i].OrderID)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Disc.Category.CategoryName)
+                    @Html.DisplayFor(modelItem => Model.Orders[i].Disc.Category.CategoryName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
+                    @Html.DisplayFor(modelItem => Model.Orders[i].Amount)
                 </td>
                 <td>
-                    @(item.Amount * item.Disc.Price)
+                    @(Model.Orders[i].Amount * Model.Orders[i].Disc.Price)
                 </td>
                 <td>
-                    <input type="checkbox" />
+                    @Html.CheckBoxFor(modelItem => Model.Orders[i].IsChecked)
+                    @Html.HiddenFor(modelItem => Model.Orders[i].IsChecked)
                 </td>
             </tr>
         }
-    }
-    else
-    {
-        <p>No Item in Cart</p>
-    }
+    </table>
+    <div class="col-md-5 col-lg-5">
+        <table class="table table-user-information">
+            <tbody>
+                <tr>
+                    <td>Address:</td>
+                    <td>
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td>
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td>
+                        @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Ship" class="btn btn-primary btn-block" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
 
-</table>
+

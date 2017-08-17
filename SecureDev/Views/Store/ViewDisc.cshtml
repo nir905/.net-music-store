@@ -35,6 +35,12 @@
                 </div>
                 <input type="submit" value="ADD TO CART" class="add-to-cart-button"/>
             }
+            @if (!string.IsNullOrEmpty(ViewBag.msg))
+            {
+                <div class="alert @ViewBag.msgType">
+                    @ViewBag.msg
+                </div>
+            }
         </div>
 
     </div>

@@ -60,8 +60,19 @@ namespace Vladi2.Controllers
             return View(list);
         }
 
-        public ActionResult ViewDisc(int id)
+        public ActionResult ViewDisc(int id,int msgCode=-1)
         {
+            switch (msgCode)
+            {
+                case 0:
+                    ViewBag.msg = "Problem insert to cart";
+                    ViewBag.msgType = "alert-danger";
+                    break;
+                case 1:
+                    ViewBag.msg = "Added secessfuly to cart";
+                    ViewBag.msgType = "alert-success";
+                    break;
+            }
             var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
             using (var m_dbConnection = new SQLiteConnection(connectionString))
             {
@@ -93,7 +104,7 @@ namespace Vladi2.Controllers
             }
             return new HttpNotFoundResult("Disc Not Found");
         }
-
+        [HttpPost]
         public ActionResult AddToCart(int DiscID, int number)
         {
             try
@@ -102,7 +113,7 @@ namespace Vladi2.Controllers
                 if (LastDiscId == DiscID)
                 {
                     if(number<1 || number>10)
-                        return RedirectToAction("Index", "Store");
+                        return RedirectToAction("ViewDisc", "Store",new { id= DiscID, msgCode = 0});
 
                     var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
                     using (var m_dbConnection = new SQLiteConnection(connectionString))
@@ -118,9 +129,9 @@ namespace Vladi2.Controllers
             }
             catch(Exception ex)
             {
-                return RedirectToAction("Index", "Store");
+                return RedirectToAction("ViewDisc", "Store" , new { id = DiscID, msgCode = 0 });
             }
-            return RedirectToAction("Index", "Store");
+            return RedirectToAction("ViewDisc", "Store", new { id = DiscID, msgCode = 1 });
         }
     }
 }
