@@ -29,8 +29,9 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Store","Index","Store")</li>
                     <li>@Html.ActionLink("Cart", "Index", "Cart")</li>
-                    <li><a href="#">Forum</a></li>
+                    <li>@Html.ActionLink("Forum", "Index", "Forum")</li>
                     <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
+                    <li>@Html.ActionLink("Shopping History", "Index", "BuisnessInformation")</li>
                     @if ((Session["myUser"] as User).IsAdmin)
                     {
                         <li><a href="#">Admin</a></li>

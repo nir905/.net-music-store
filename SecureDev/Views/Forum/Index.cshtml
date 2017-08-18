@@ -5,15 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Forum</h2>
 
-<p>
+<p class="createTopic">
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            <div class="forumTitle">
+                @Html.DisplayNameFor(model => model.Title)
+            </div>
         </th>
         <th></th>
     </tr>

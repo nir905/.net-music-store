@@ -145,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BuisnessInformationController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Filter\AuthAttr.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -215,6 +216,7 @@
     <Content Include="Views\Store\ViewDisc.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\Success.cshtml" />
+    <Content Include="Views\BuisnessInformation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

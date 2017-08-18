@@ -289,3 +289,7 @@ C:\Users\Nir Avraham\Desktop\securemvc\SecureDev\bin\AntiXssLibrary.dll
 C:\Users\Nir Avraham\Desktop\securemvc\SecureDev\bin\HtmlSanitizationLibrary.dll
 C:\Users\Nir Avraham\Desktop\securemvc\SecureDev\bin\AntiXssLibrary.xml
 C:\Users\Nir Avraham\Desktop\securemvc\SecureDev\bin\HtmlSanitizationLibrary.xml
+C:\Users\Maria\Desktop\קורס של וולדי\SecureDev\SecureDev\bin\AntiXssLibrary.dll
+C:\Users\Maria\Desktop\קורס של וולדי\SecureDev\SecureDev\bin\HtmlSanitizationLibrary.dll
+C:\Users\Maria\Desktop\קורס של וולדי\SecureDev\SecureDev\bin\AntiXssLibrary.xml
+C:\Users\Maria\Desktop\קורס של וולדי\SecureDev\SecureDev\bin\HtmlSanitizationLibrary.xml
