@@ -15,9 +15,11 @@ namespace Vladi2.Controllers
     {
         public ActionResult Index()
         {
-            HttpCookie SID = HttpContext.Request.Cookies["SID"];
-            if (SID == null || Session["myUser"] == null || SID.Value != HttpContext.Session.SessionID)
+            if (Session["myUser"] == null)
+            {
+                HttpContext.Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId") { Expires = DateTime.Now.AddDays(-1) });
                 return View();
+            }
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
@@ -68,7 +70,7 @@ namespace Vladi2.Controllers
                                         clearUnseccess.ExecuteNonQuery();
                                     }
                                     Session["myUser"] = myUser;
-                                    HttpContext.Response.SetCookie(new HttpCookie("SID", HttpContext.Session.SessionID));
+                                    //HttpContext.Response.SetCookie(new HttpCookie("SID", HttpContext.Session.SessionID));
                                     return RedirectToAction("Index", "Home");
                                 }
                                 else

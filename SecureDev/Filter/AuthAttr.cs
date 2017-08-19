@@ -10,8 +10,7 @@ namespace Vladi2.App_Start
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            HttpCookie SID = HttpContext.Current.Request.Cookies["SID"];
-            if (SID == null || HttpContext.Current.Session["myUser"] == null || SID.Value != HttpContext.Current.Session.SessionID)
+            if (HttpContext.Current.Session["myUser"] == null)
             {
                 filterContext.Result = new RedirectResult("~/Login");
                 return;

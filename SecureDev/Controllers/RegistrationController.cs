@@ -17,16 +17,21 @@ namespace Vladi2.Controllers
     {
         public ActionResult Index()
         {
-            User user = new User()
+            if (Session["myUser"] == null)
             {
-                UserName = "",
-                Password = "",
-                FirstName = "",
-                Email = "",
-                Phone = "",
-                LastName = ""
-            };
-            return View(user);
+                HttpContext.Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId"){ Expires = DateTime.Now.AddDays(-1)});
+                User user = new User()
+                {
+                    UserName = "",
+                    Password = "",
+                    FirstName = "",
+                    Email = "",
+                    Phone = "",
+                    LastName = ""
+                };
+                return View(user);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
