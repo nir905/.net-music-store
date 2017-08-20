@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Vladi2.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Orders</h2>
+<span style="float: right; font-size: 15px;">Show <b>@Model.Count()</b> Products, Total Price: <b>£@ViewBag.TotalPrice</b></span>
+
+<div class="col-md-12">
+    <table class="table table-striped table-responsive">
+        <tr>
+            <th width="1"></th>
+            <th>
+                Disc
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th>Shipped</th>
+        </tr>
+        @foreach(var order in Model)
+            {
+            <tr>
+                <td>
+                    <div class="disc-img" style="background-image: url('@Url.Content("~/CD_Images/" + @order.Disc.PictureUrl)')"></div>
+                </td>
+                <td>
+                    <b>@Html.DisplayFor(modelItem => order.Disc.Name)</b>
+                    <p>@Html.DisplayFor(modelItem => order.Disc.Artist)</p>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => order.Disc.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => order.Amount)
+                </td>
+                <td>
+                    £@(order.Amount * order.Disc.Price)
+                </td>
+                <td>
+                    @(order.Address + ", "+order.City+", "+order.Country)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

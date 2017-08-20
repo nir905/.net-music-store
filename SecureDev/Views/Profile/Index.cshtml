@@ -1,0 +1,64 @@
+﻿@using Vladi2.Models
+@model User
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>User's Profile</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-centered toppad">
+                <div class="panel panel-info">
+                    <div class="panel-heading row" style="margin-right: 0px; margin-left: 0px;">
+                        <div class="col-xs-6">
+                            <h3 class="panel-title" style="padding-top: 7px;"><strong>My Profile</strong></h3>
+                        </div>
+                         <div class="col-xs-6 text-right" style="padding-left: 0px; padding-right: 0px;">
+                             <a href="@Url.Action("Index","EditProfile")" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                          </div>
+                        </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-4 " align="center">
+                                <div class="user-img" style="background-image: url('@Url.Content(Model.PictureUrl)')"></div>
+                            </div>
+                            <div class=" col-md-9 col-lg-8">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                        <tr>
+                                            <td>First Name:</td>
+                                            <td>@Model.FirstName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Name:</td>
+                                            <td>@Model.LastName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>@Model.Email</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone Number</td>
+                                            <td>@Model.Phone</td>
+                                        </tr>
+
+                                    </tbody>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

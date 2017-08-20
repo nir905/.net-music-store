@@ -1,0 +1,113 @@
+﻿@using Vladi2.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Store</title>
+    @*Renders and minifes site css*@
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Music Store</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Store", "Index", "Store")</li>
+                    <li>@Html.ActionLink("Cart", "Index", "Cart")</li>
+                    <li>@Html.ActionLink("My Orders", "Index", "History")</li>
+                    <li>@Html.ActionLink("Forum", "Index", "Forum")</li>
+                    <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
+                    @if ((Session["myUser"] as User).IsAdmin)
+                    {
+                        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    @*renders and minifies scripts with the mvc bundles*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <div class="container body-content">
+        @*all the views are rendered inside this div*@
+        @RenderBody()
+        <hr />
+        @*layout footer*@
+    </div>
+    <footer>
+        <ul class="nav navbar-nav">
+            <li><a>Music Store - 2017</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Jobs</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </footer>
+
+
+    <script>
+        $(document).ready(function () {
+            $('li').each(function () {
+                $(this).removeClass('active');
+            });
+            $('ul.nav.navbar-nav').find('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+
+            $(".action").click(function () {
+                var add = 0;
+                if ($(this).hasClass("up"))
+                    add = 1;
+                else
+                    add = -1;
+                var newnum = $.isNumeric($(".number").val()) ? (parseInt($(".number").val()) + add) : 1;
+                if (newnum <= 0)
+                    newnum = 1;
+                else if (newnum > 10)
+                    newnum = 10;
+                $(".number").val(newnum);
+            });
+
+            $("#file").change(function () {
+                readURL(this);
+            });
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-preview').css('background-image', "url('" + e.target.result + "')");
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@using Vladi2.Models
+@model IEnumerable<Vladi2.Models.Disc>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Store</h2>
+<form method="get" action="Store">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <input type="text" name="q" class="form-control input-lg" placeholder="Search..." value="@ViewBag.Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-4">
+            <div class="btn-group">
+                <a href="#" id="grid" class="btn btn-info active">
+                    <span class="glyphicon glyphicon-th"></span>Grid
+                </a>
+                <a href="#" id="list" class="btn btn-info">
+                    <span class="glyphicon glyphicon-th-list"></span>List
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-2 ">
+        <div class="affix small-box">
+            <span>CATEGORIES</span>
+            @Html.ActionLink("All", "Index", "Store")
+            @foreach (var cat in (ViewBag.Categories as List<Category>))
+            {
+                @Html.ActionLink(cat.CategoryName, "Index", "Store", new { q = cat.CategoryName }, null)
+            }
+        </div>
+    </div>
+    <div class="col-md-10" id="discs">
+        @foreach (var disc in Model)
+        {
+            <div class="disc">
+                <div class="disc-img" style="background-image: url('CD_Images/@disc.PictureUrl')"></div>
+                <div class="disc-title">@disc.Name</div>
+                <div class="disc-artist">@disc.Artist</div>
+                <div class="disc-price">£@disc.Price</div>
+                <div class="disc-category">@disc.Category.CategoryName</div>
+                @Html.ActionLink("VIEW DISC", "ViewDisc", "Store", new { id = disc.DiscID }, new { @class = "view-disc" })
+            </div>
+        }
+        @if (!Model.Any())
+        {
+            <h4>No Results Found</h4>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#list').click(function (event) {
+            event.preventDefault();
+            $(this).addClass("active");
+            $("#grid").removeClass("active");
+            $('#discs').addClass('list-group');
+        });
+        $('#grid').click(function(event) {
+            event.preventDefault();
+            $(this).addClass("active");
+            $("#list").removeClass("active");
+            $('#discs').removeClass('list-group');
+        });
+    });
+</script>

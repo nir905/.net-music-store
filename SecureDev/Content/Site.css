@@ -1,0 +1,434 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+    background-color: #F4F4F4;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1300px;
+    }
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 35px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+form {
+    margin: 0 auto;
+}
+
+.box-form {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 20px;
+    margin-top: 50px;
+}
+
+    .box-form h4 {
+        background-color: #6498FE;
+        margin: -20px;
+        padding: 20px;
+        color: #ffffff;
+    }
+
+.input-group .form-control {
+    padding: 20px 10px;
+}
+
+.navbar-default li a {
+    transition: 200ms;
+}
+
+    .navbar-default li a:hover, .navbar-default li a:focus, .navbar-default li.active a {
+        background-color: #636d80 !important;
+        color: #ffffff !important;
+    }
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2f3a4e;
+}
+
+    footer a {
+        color: #ffffff;
+    }
+
+
+
+/*search box*/
+#custom-search-input {
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+    #custom-search-input input {
+        border: 0;
+        box-shadow: none;
+    }
+
+    #custom-search-input button {
+        margin: 2px 0 0 0;
+        background: none;
+        box-shadow: none;
+        border: 0;
+        color: #666666;
+        padding: 0 8px 0 10px;
+        border-left: solid 1px #ccc;
+    }
+
+        #custom-search-input button:hover {
+            border: 0;
+            box-shadow: none;
+            border-left: solid 1px #ccc;
+        }
+
+    #custom-search-input .glyphicon-search {
+        font-size: 23px;
+    }
+
+.disc {
+float: left;
+    margin: 10px 5px 10px 3px;
+    background-color: #ffffff;
+    width: 245px;
+    height: 430px;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    transition: 200ms;
+}
+
+.disc-img {
+    width: 243px;
+    height: 217px;
+    background-size: cover;
+    background-position: center;
+}
+
+.disc-title {
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px 10px 0 10px;
+}
+
+.disc-artist {
+    font-size: 16px;
+    padding: 1px 10px;
+}
+
+.disc-price {
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px 10px 0 10px;
+}
+
+.disc-category {
+    font-size: 13px;
+    padding: 0 10px;
+    font-style: italic;
+}
+
+a.view-disc {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    width: 87%;
+    border: 2px solid #ED0677;
+    background-color: #ffffff;
+    padding: 10px;
+    outline: none;
+    font-size: 13px;
+    transition: 200ms;
+    text-decoration: none;
+    text-align: center;
+    color: #000000;
+    cursor: pointer;
+}
+
+.view-disc:hover {
+    background-color: #ed0677;
+    color: #ffffff;
+}
+
+.list-group {
+    padding-left: 20px;
+}
+
+    .list-group .disc {
+        float: none;
+        width: 100%;
+        height: auto;
+        padding: 16px 0px;
+        box-shadow: none;
+    }
+
+    .list-group .disc-img {
+        width: 67px;
+        height: 67px;
+        float: left;
+        border-radius: 50%;
+        margin-left: 20px;
+        margin-top: 6px;
+        margin-right: 18px;
+    }
+
+    .list-group .disc-price {
+        position: absolute;
+        top: 0;
+        right: 5px;
+    }
+
+    .list-group a.view-disc {
+        width: 15%;
+        right: 8px;
+        left: auto;
+    }
+/*lion and maria CSS code*/
+
+
+.user-row {
+    margin-bottom: 14px;
+}
+
+    .user-row:last-child {
+        margin-bottom: 0;
+    }
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+    .dropdown-user:hover {
+        cursor: pointer;
+    }
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+    .table-user-information > tbody > tr:first-child {
+        border-top: none;
+    }
+
+
+    .table-user-information > tbody > tr > td {
+        border-top: 0;
+    }
+
+    .table-user-information > tbody > tr:last-child {
+        border-top: none;
+    }
+
+.toppad {
+    margin-top: 20px;
+}
+
+
+.box-form1 {
+    background-color: #ffffff;
+    width: 45%;
+    max-width: 430px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 20px;
+    padding-top: unset;
+}
+
+
+.user-img {
+    width: 150px;
+    height: 150px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.large-details .disc-img {
+    width: 340px;
+    height: 327px;
+    background-position: center;
+}
+
+.large-details .disc-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.large-details .disc-artist {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.large-details .disc-price {
+    font-size: 22px;
+}
+
+.large-details .disc-category {
+    font-size: 17px;
+    padding: 4px;
+}
+
+
+.add-to-cart {
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+    .add-to-cart span {
+        font-size: 12px;
+        font-weight: bold;
+        display: block;
+        text-align: left;
+    }
+
+.pick-number {
+    margin: 5px 0px;
+}
+
+.box-number {
+    display: inline-block;
+    border: 1px solid #D3D6D9;
+    margin-right: -5px;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+    .box-number.action {
+        color: #ed0677;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #ffffff;
+    }
+
+.add-to-cart-button {
+    background-color: #ED0677;
+    border: 2px solid #ED0677;
+    color: #fff;
+    display: inline-block;
+    padding: 11px 0;
+    width: 100%;
+    margin: 10px 0;
+    font-weight: bold;
+    transition: 200ms;
+}
+
+    .add-to-cart-button:hover, .add-to-cart-button:focus {
+        background-color: #3D3D3D;
+        border-color: #3D3D3D;
+    }
+
+td .disc-img {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+}
+
+
+/*added by maria*/
+
+.forumTitle {
+    font-size: 150%;
+    font-family: 'Vladimir';
+}
+
+.createTopic {
+    font-size: 120%;
+}
+
+.myOrders {
+    font-size: 140%;
+    font-weight: 700;
+}
+
+.small-box {
+    background-color: #ffffff;
+    padding: 0;
+    width: 11%;
+    margin-top: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+    .small-box span {
+        padding: 10px;
+        display: block;
+        font-weight: bold;
+    }
+
+    .small-box a {
+        padding: 10px;
+        cursor: pointer;
+        display: block;
+        color: #2f3a4e;
+        text-decoration: none;
+    }
+
+        .small-box a:hover {
+            background-color: #d3d6d9;
+        }
+
+
+.box {
+    background-color: #ffffff;
+    margin: 20px 5px;
+    border: 1px solid #e0e0e0;
+    padding:0px 13px
+}
+
+    .box h4 {
+        background-color: #6498fe;
+        padding: 15px;
+        margin: -15px -14px 9px -14px;
+        color: #ffffff;
+    }
+
+    .box div.item, .box a {
+        display: block;
+        text-decoration: none;
+        padding: 11px 0;
+        cursor: default;
+        border-bottom: 1px solid #e4e4e4;
+    }
+
+    .box a {
+        cursor: pointer;
+        border-bottom: none;
+    }

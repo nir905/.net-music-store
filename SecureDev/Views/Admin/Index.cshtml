@@ -1,0 +1,35 @@
+﻿@model Vladi2.Models.AdminVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Admin Panel</h2>
+
+<div class="container">
+    <div class="col-md-4 box">
+        <h4>Last Discs</h4>
+        @foreach (var disc in Model.Discs)
+        {
+            <div class="item"><b>@disc.Name</b> - @disc.Artist</div>
+        }
+        @Html.ActionLink("See More...","Discs")
+    </div>
+    <div class="col-md-3 box">
+        <h4>Last Users</h4>
+        @foreach (var user in Model.Users)
+        {
+            <div class="item">@user.FirstName @user.LastName</div>
+        }
+        @Html.ActionLink("See More...", "Users")
+    </div>
+    <div class="col-md-3 box">
+        <h4>Last Categories</h4>
+        @foreach (var cat in Model.Categories)
+        {
+            <div class="item">@cat.CategoryName</div>
+        }
+        @Html.ActionLink("See More...", "Categories")
+    </div>
+</div>
+

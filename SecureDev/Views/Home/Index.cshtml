@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Vladi2.Models.Disc>
+<div class="wrapper">
+    <h1>Welcome @ViewBag.FirstName</h1>
+    <form method="get" action="Store">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Find your CD you like now!</h3>
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" name="q" class="form-control input-lg" placeholder="Search..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-info btn-lg" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    <h3>Last Added</h3>
+    @foreach (var disc in Model)
+    {
+        <div class="disc">
+            <div class="disc-img" style="background-image: url('CD_Images/@disc.PictureUrl')"></div>
+            <div class="disc-title">@disc.Name</div>
+            <div class="disc-artist">@disc.Artist</div>
+            <div class="disc-price">£@disc.Price</div>
+            <div class="disc-category">@disc.Category.CategoryName</div>
+            @Html.ActionLink("VIEW DISC", "ViewDisc", "Store", new { id = disc.DiscID }, new { @class = "view-disc" })
+        </div>
+    }
+</div>
+
