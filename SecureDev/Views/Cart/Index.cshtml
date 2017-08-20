@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         <b>@Html.DisplayFor(modelItem => Model.Orders[i].Disc.Name)</b>
-                        <p>@Html.DisplayFor(modelItem => Model.Orders[i].Disc.Artist)</p>
+                        <div>@Html.DisplayFor(modelItem => Model.Orders[i].Disc.Artist)</div>
                         @Html.HiddenFor(modelItem => Model.Orders[i].OrderID)
                     </td>
                     <td>

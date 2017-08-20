@@ -27,14 +27,14 @@
             <th>Shipped</th>
         </tr>
         @foreach(var order in Model)
-            {
+        {
             <tr>
                 <td>
                     <div class="disc-img" style="background-image: url('@Url.Content("~/CD_Images/" + @order.Disc.PictureUrl)')"></div>
                 </td>
                 <td>
                     <b>@Html.DisplayFor(modelItem => order.Disc.Name)</b>
-                    <p>@Html.DisplayFor(modelItem => order.Disc.Artist)</p>
+                    <div>@Html.DisplayFor(modelItem => order.Disc.Artist)</div>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => order.Disc.Category.CategoryName)
@@ -52,3 +52,9 @@
         }
     </table>
 </div>
+
+<style>
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+</style>
