@@ -13,12 +13,12 @@ namespace Vladi2.Controllers
     [AuthAttr]
     public class StoreController : BaseController
     {
-        // GET: Store
         public ActionResult Index(string q = null)
         {
             q = Sanitizer.GetSafeHtmlFragment(q);
             ViewBag.Search = q;
             List<Disc> list = new List<Disc>();
+            List<Category> categories = new List<Category>();
             var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
             using (var m_dbConnection = new SQLiteConnection(connectionString))
             {
@@ -56,10 +56,22 @@ namespace Vladi2.Controllers
                         });
                     }
                 }
+
+                SQLiteCommand categoriesCommand = new SQLiteCommand("select categoryid, categoryName from Category", m_dbConnection);
+                using (SQLiteDataReader reader = categoriesCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        categories.Add(new Category()
+                        {
+                           CategoryName = reader["categoryName"].ToString()
+                        });
+                    }
+                }
+                ViewBag.Categories = categories;
             }
             return View(list);
         }
-
         public ActionResult ViewDisc(int id,int msgCode=-1)
         {
             switch (msgCode)
@@ -109,11 +121,11 @@ namespace Vladi2.Controllers
         {
             try
             {
-                int LastDiscId = Convert.ToInt32((HttpContext.Request.Headers["Referer"].Split('/'))[5]);
+                int LastDiscId = Convert.ToInt32(HttpContext.Request.Headers["Referer"].Split('/')[5].Split('?')[0]);
                 if (LastDiscId == DiscID)
                 {
                     if(number<1 || number>10)
-                        return RedirectToAction("ViewDisc", "Store",new { id= DiscID, msgCode = 0});
+                        return RedirectToAction("ViewDisc", "Store",new { id = DiscID, msgCode = 0});
 
                     var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
                     using (var m_dbConnection = new SQLiteConnection(connectionString))

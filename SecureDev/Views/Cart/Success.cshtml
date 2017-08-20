@@ -4,7 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Success!</h2>
+<h2>Item(s) shiped Successfully!</h2>
 
-@Html.ActionLink("Back to Cart","Index")
+@Html.ActionLink("Back to Cart", "Index")
+<span style="float: right">
+    @Html.ActionLink("Go to My Orders", "Index", "History")
+</span>
 

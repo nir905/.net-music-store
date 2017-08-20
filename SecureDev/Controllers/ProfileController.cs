@@ -14,9 +14,6 @@ namespace Vladi2.Controllers
         public ActionResult Index()
         {
             return View((User)Session["myUser"]);
-
         }
-
-
     }
 }
