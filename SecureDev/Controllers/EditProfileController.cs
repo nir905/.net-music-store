@@ -56,17 +56,20 @@ namespace Vladi2.Controllers
                 ViewBag.imageErr = valid.Message;
                 return View(user);
             }
-            file.SaveAs(Path.Combine(Server.MapPath(@"~\ProfileImages\"),valid.Message));
+            if (valid.Message != "")
+            {
+                file.SaveAs(Path.Combine(Server.MapPath(@"~\ProfileImages\"), valid.Message));
 
-            //delete prev picture
-            string oldFileName = Server.MapPath(((User)Session["myUser"]).PictureUrl);
-            if (!oldFileName.Contains("default-user.png"))
-                if (System.IO.File.Exists(oldFileName))
-                {
-                    System.IO.File.Delete(oldFileName);
-                }
+                //delete prev picture
+                string oldFileName = Server.MapPath(((User)Session["myUser"]).PictureUrl);
+                if (!oldFileName.Contains("default-user.png"))
+                    if (System.IO.File.Exists(oldFileName))
+                    {
+                        System.IO.File.Delete(oldFileName);
+                    }
+                ((User)Session["myUser"]).PictureUrl = @"~/ProfileImages/" + valid.Message;
+            }
 
-            ((User)Session["myUser"]).PictureUrl = @"~/ProfileImages/" + valid.Message;
             ((User)Session["myUser"]).FirstName = user.FirstName;
             ((User)Session["myUser"]).LastName = user.LastName;
             ((User)Session["myUser"]).Email = user.Email;

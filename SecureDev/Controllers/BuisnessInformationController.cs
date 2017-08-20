@@ -23,12 +23,13 @@ namespace Vladi2.Controllers
                 using (SQLiteCommand OrdersCommand = new SQLiteCommand(@"Select Disc.name, Disc.artist, Category.categoryName, Orders.orderTime, Disc.songsAmount, Disc.duration, Disc.price from Users inner join Orders on Users.id = Orders.userId inner join Disc on Disc.discID = Orders.discID inner join Category on Disc.categoryID = Category.categoryID where Orders.isBought = 1 and Users.id = @userID", m_dbConnection))
                 {
                     OrdersCommand.Parameters.Add(new SQLiteParameter("userID", ((User)Session["myUser"]).UserID));
-                    
+
                     using (SQLiteDataReader reader = OrdersCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            list.Add(new Order() {
+                            list.Add(new Order()
+                            {
                                 OrderTime = DateTime.Parse(reader["orderTime"].ToString()),
                                 Disc = new Disc()
                                 {
@@ -54,19 +55,19 @@ namespace Vladi2.Controllers
 
                     using (SQLiteDataReader reader = SumCommand.ExecuteReader())
                     {
-                        
-                            while (reader.Read())
-                            {   
 
-                                var totalPrice = float.Parse(reader["price"].ToString());
-                                ViewBag.TotalPrice = totalPrice;
-                                
-                            }
+                        while (reader.Read())
+                        {
+
+                            var totalPrice = float.Parse(reader["price"].ToString());
+                            ViewBag.TotalPrice = totalPrice;
+
+                        }
                     }
 
                 }
             }
-                            return View(list);
+            return View(list);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Security.Application;
 using Vladi2.App_Start;
 using Vladi2.Models;
 
@@ -80,7 +81,7 @@ namespace Vladi2.Controllers
                 }
                 if(!ids.Any())
                     return RedirectToAction("Index", "Cart", new { msgCode = 1 });
-                if (string.IsNullOrEmpty(cart.Address) || string.IsNullOrEmpty(cart.City) || string.IsNullOrEmpty(cart.Country))
+                if (!cart.IsValidInformation())
                     return RedirectToAction("Index", "Cart", new { msgCode = 2 });
                 string param = String.Join(", ", ids.ToArray());//@id1, @id2..
                 var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));

@@ -24,16 +24,16 @@
         </div>
 
         <div class="col-sm-4 col-md-3 add-to-cart">
-            @using (Html.BeginForm("AddToCart", "Store", FormMethod.Post))
+            @using (Html.BeginForm("AddToCart", "Store", FormMethod.Post, new { @onsubmit = "return checkform()" }))
             {
                 <span>QYY</span>
                 <div class="pick-number">
-                    <input type="button" class="box-number action down" value="-"/>
-                    <input type="text" class="box-number number" name="number" value="1">
-                    @Html.HiddenFor(model=>model.DiscID)
-                    <input type="button" class="box-number action up" value="+"/>
+                    <input type="button" class="box-number action down" value="-" />
+                    <input type="text" class="box-number number" name="number" value="1" id="number-text">
+                    @Html.HiddenFor(model => model.DiscID)
+                    <input type="button" class="box-number action up" value="+" />
                 </div>
-                <input type="submit" value="ADD TO CART" class="add-to-cart-button"/>
+                <input type="submit" value="ADD TO CART" class="add-to-cart-button" />
             }
             @if (!string.IsNullOrEmpty(ViewBag.msg))
             {
@@ -47,5 +47,14 @@
 </p>
 <p>
     @Html.ActionLink("Back to Store", "Index")
-
 </p>
+
+<script>
+    function checkform() {
+        if ($.isNumeric($("#number-text").val()) && parseInt($("#number-text").val()) >= 1 && parseInt($("#number-text").val()) <= 10) {
+            return true;
+        }
+        alert("יש להכניס מספר מ1 עד 10");
+        return false;
+    }
+</script>
