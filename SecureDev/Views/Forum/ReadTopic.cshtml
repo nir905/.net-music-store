@@ -16,8 +16,6 @@
             <a href="#Add"><span class="glyphicon glyphicon-plus"></span>New Comment</a>
         </div>
 
-        @*@{int i = 1;}*@
-
         @for (int i = 1; i <= Model.Comments.Count; ++i)
         {
             <div class="panel panel-default">
@@ -28,49 +26,36 @@
                         </div>
                         <div class="pull-right">
                             @Model.Comments[i - 1].CommentTime
-                            @*@comment.CommentTime*@
                         </div>
                     </div>
                 </div>
                 <div class="row panel-body">
                     <div class="col-md-10">
                         @Model.Comments[i - 1].Text
-                        @*@comment.Text*@
                     </div>
                     <div class="col-md-2" style="text-align:center;">
                         <div class="well">
-                            <b>@*@comment.CommentUser*@@Model.Comments[i - 1].CommentUser</b>
+                            <b>@Model.Comments[i - 1].CommentUser</b>
                             <br />
-                            <img class="img-rounded" src="http://www.webdesignforums.net/img/wdf_avatar.jpg" />
+                            <div class="img-thumbnail user-icon" style="background-image: url('@Url.Content(Model.Comments[i - 1].pictureURL)')"></div>
                         </div>
                     </div>
                 </div>
             </div>
         }
-
-        @*@foreach (var comment in Model)
-        {
-            
-
-
-            i = i + 1;
-        }*@
         <div>
             <h1 id="Add">Add Comment</h1>
         </div>
-        @using (Html.BeginForm("addTopic", "Forum", FormMethod.Post))
+        @if (ViewBag.Err != null)
         {
-            Vladi2.Models.Comment c = new Vladi2.Models.Comment();
-
-            //List<Vladi2.Models.Comment> l = Model as List<Vladi2.Models.Comment>;
-
-            c.CommentTime = DateTime.Now;
-            c.CommentUser = (Session["myUser"] as Vladi2.Models.User).UserName;
-            //l.Add(c);
-            Model.Comments.Add(c);
-
-            @Html.EditorFor(model => (model.Comments.Last()).Text, new { htmlAttributes = new { @class = "area" } })
-
+            <div class="alert alert-danger" style="padding: 9px;">
+                @ViewBag.Err
+            </div>
+        }
+        @using (Html.BeginForm("addComment", "Forum", FormMethod.Post))
+        {
+            @Html.EditorFor(model => model.newComment.Text, new { htmlAttributes = new { @class = "area" } })
+            @Html.HiddenFor(model => model.TopicID)
             <div class="row">
                 <div class="col-md-1">
                     <input type="submit" value="Add" class="btn btn-primary small-btn" />
@@ -109,5 +94,13 @@
 
     .small-btn {
         width: 70px;
+    }
+
+    .user-icon {
+        width: 150px;
+        height: 135px;
+        background-position: center;
+        background-size: cover;
+        border-radius: 50%;
     }
 </style>

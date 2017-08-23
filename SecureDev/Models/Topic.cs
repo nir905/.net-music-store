@@ -16,5 +16,7 @@ namespace Vladi2.Models
 
         public List<Comment> Comments { get; set; }
 
+        public Comment newComment { get; set; }
+
     }
 }

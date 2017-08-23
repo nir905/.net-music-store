@@ -222,6 +222,7 @@
     <Content Include="Views\Error\Error404.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\History\Index.cshtml" />
+    <Content Include="Views\Forum\addTopic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,6 +10,8 @@ namespace Vladi2.Models
     {
         public string CommentUser { get; set; }
 
+        public string pictureURL { get; set; }
+
         [DataType(DataType.MultilineText)]
         public string Text { get; set; }
         public DateTime CommentTime { get; set; }
