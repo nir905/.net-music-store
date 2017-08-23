@@ -5,32 +5,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Forum</h2>
+<head>
+    @*<meta name="viewport" content="width=device-width" />*@
+    <title>Forum</title>
 
-<p class="createTopic">
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            <div class="forumTitle">
-                @Html.DisplayNameFor(model => model.Title)
-            </div>
-        </th>
-        <th></th>
-    </tr>
+</head>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+<body>
 
-</table>
+    <h2>Forum</h2>
+
+    <p class="createTopic">
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th @*class="text-center"*@>Topic</th>
+                <th>Author</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+
+        @foreach (var topic in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(topic.Title, "ReadTopic", new { topic.TopicID })
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => topic.Author)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => topic.TopicTime)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+
+</body>
