@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Vladi2.Models.Order>
-@{
-    ViewBag.Title = "Index" ;
-    }
 
 @{
-    Layout = null;
-}
+    ViewBag.Title = "Index" ;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ }
+
+
 
 <!DOCTYPE html>
 
@@ -21,16 +21,16 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-1 toppad">
-                <div class="panel panel-info" style="width:1000px; height:500px">
+                <div class="panel panel-info" style="width:1000px">
                     <div class="panel-heading row" style="margin-right: 0px; margin-left: 0px;">
                         <div class="col-xs-6">
-                            <h3 class="panel-title" style="padding-top: 7px;"><strong>My Shopping History</strong></h3>
+                            <h3 class="panel-title" style="padding-top: 7px;"><strong>My Orders</strong></h3>
                         </div>
                     </div>
-                    <div class="panel-body" style="align-items:center">
+                    <div class="panel-body" style="align-items:center; padding-top: 0px;">
                         <div class="row">
                             <div class=" col-md-12 col-lg-12" style="padding-left:-10px;padding-right: 0px; padding-left:5px;">
-                                <div class="myOrders">My Orders:</div><br />
+                                @*<div class="myOrders">My Orders:</div><br />*@
                                 <table class="table table-user-information t1">
                                     <tbody>
                                         <tr>
@@ -65,16 +65,17 @@
                                                     @Html.DisplayFor(modelItem => order.Disc.Duration)
                                                 </td>
                                                 <td style="text-align:center">
-                                                    @Html.DisplayFor(modelItem => order.Disc.Price)
+                                                    @Html.DisplayFor(modelItem => order.Disc.Price) £
                                                 </td>
                                             </tr>
                                         }
+                                        <tr><td style="padding-top:100px"><b>Total Price of My Orders:</b> @ViewBag.TotalPrice £</td></tr>
                                 </tbody>
-                                </table><br /><br />
+                                </table>
 
-                                <div>
-                                    Total number of my discs: @ViewBag.TotalPrice
-                                </div>
+                                @*<div>
+                                    
+                                </div>*@
                                  
                             </div>
                         </div>
