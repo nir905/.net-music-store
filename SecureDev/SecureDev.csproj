@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\BuisnessInformationController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -225,6 +226,7 @@
     <Content Include="Views\History\Index.cshtml" />
     <Content Include="Views\Forum\addTopic.cshtml" />
     <Content Include="Views\BuisnessInformation\Index.cshtml" />
+    <Content Include="Views\AdminUsers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

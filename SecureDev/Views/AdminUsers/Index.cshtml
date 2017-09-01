@@ -1,0 +1,64 @@
+﻿@model List<Vladi2.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+
+
+<table class="table">
+    <tr>
+        <th width="1"></th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].IsAdmin)
+        </th>
+
+        <th></th>
+    </tr>
+
+@for (var i = 0; i < Model.Count; i++) {
+    <tr>
+        <td>
+            <div class="disc-img" style="background-image: url('@Url.Content(@Model[i].PictureUrl)')"></div>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem[i].IsAdmin)
+        </td>
+
+    </tr>
+}
+
+</table>
