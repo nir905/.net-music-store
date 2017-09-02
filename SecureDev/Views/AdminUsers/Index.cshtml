@@ -7,58 +7,88 @@
 
 <h2>Users</h2>
 
+@using (Html.BeginForm("changeUsersPrivileges", "AdminUsers", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th width="1"></th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].IsAdmin)
+            </th>
 
+            <th></th>
+        </tr>
 
-<table class="table">
-    <tr>
-        <th width="1"></th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].IsAdmin)
-        </th>
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        <tr>
+            <td>
+                <div class="disc-img" style="background-image: url('@Url.Content(@Model[i].PictureUrl)')"></div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].UserName)
+                @*@Html.EditorFor(modelItem => modelItem[i].UserName, new { htmlAttributes = new { @type="textbox", @class= "labelLike", @readonly= "true" } })*@
+                @Html.HiddenFor(modelItem => modelItem[i].UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem[i].Phone)
+            </td>
+            <td>@*make sure that Admin doesnt edit its own priviliges*@
+                @if (Model[i].UserName != (Session["myUser"] as Vladi2.Models.User).UserName)
+                {
+                  @Html.CheckBoxFor(modelItem => modelItem[i].IsAdmin)
+                }
+                else
+                {
+                    @Html.EditorFor(modelItem => modelItem[i].IsAdmin, new { htmlAttributes = new { @type = "checkbox", @onclick = "return false" } })
+                }
+            </td>
 
-        <th></th>
-    </tr>
-
-@for (var i = 0; i < Model.Count; i++) {
-    <tr>
-        <td>
-            <div class="disc-img" style="background-image: url('@Url.Content(@Model[i].PictureUrl)')"></div>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => modelItem[i].IsAdmin)
-        </td>
-
-    </tr>
+        </tr>
+    }
+        <tr><td  colspan="2">
+    <div class="row">
+        <div class="col-md-5">
+            <input type="submit" value="Update" class="btn btn-primary btn-block" />
+            </div>
+        </div>
+</td></tr>
+    </table>
 }
 
-</table>
+<style>
+    .table > tbody > tr > td {
+        vertical-align: middle;
+        
+    }
+
+    .labelLike {
+        background: rgba(0,0,0,0);
+        border: none;
+    }
+</style>
