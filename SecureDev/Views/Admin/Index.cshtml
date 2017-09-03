@@ -13,7 +13,7 @@
         {
             <div class="item"><b>@disc.Name</b> - @disc.Artist</div>
         }
-        @Html.ActionLink("See More...","Discs")
+        @Html.ActionLink("See More...","Index","AdminDisc")
     </div>
     <div class="col-md-3 box">
         <h4>Last Users</h4>
@@ -21,7 +21,7 @@
         {
             <div class="item">@user.FirstName @user.LastName</div>
         }
-        @Html.ActionLink("See More...", "Users")
+        @Html.ActionLink("See More...", "Index","AdminUsers")
     </div>
     <div class="col-md-3 box">
         <h4>Last Categories</h4>

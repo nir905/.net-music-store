@@ -70,20 +70,5 @@ namespace Vladi2.Controllers
                 Categories = catsList
             });
         }
-
-        public ActionResult Discs()
-        {
-            return View();
-        }
-
-        public ActionResult Users()
-        {
-            return View();
-        }
-
-        public ActionResult Categories()
-        {
-            return View();
-        }
     }
 }

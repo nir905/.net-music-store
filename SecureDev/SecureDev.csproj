@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminDiscController.cs" />
     <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\BuisnessInformationController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
@@ -227,6 +228,9 @@
     <Content Include="Views\Forum\addTopic.cshtml" />
     <Content Include="Views\BuisnessInformation\Index.cshtml" />
     <Content Include="Views\AdminUsers\Index.cshtml" />
+    <Content Include="Views\AdminDisc\Index.cshtml" />
+    <Content Include="Views\AdminDisc\Create.cshtml" />
+    <Content Include="Views\AdminDisc\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

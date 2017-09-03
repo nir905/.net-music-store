@@ -65,34 +65,34 @@
             <h4>Ship Information</h4>
             <table class="table table-user-information">
                 <tbody>
-                <tr>
-                    <td>Street:</td>
-                    <td>
-                        @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control"}})
-                    </td>
-                </tr>
-                <tr>
-                    <td>City:</td>
-                    <td>
-                        @Html.EditorFor(model => model.City, new {htmlAttributes = new {@class = "form-control"}})
-                    </td>
-                </tr>
-                <tr>
-                    <td>Country:</td>
-                    <td>
-                        @Html.EditorFor(model => model.Country, new {htmlAttributes = new {@class = "form-control"}})
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="col-md-6">
-                            <input type="submit" value="Ship" class="btn btn-primary btn-block" />
-                        </div>
-                        <div class="col-md-6">
-                            <input type="reset" value="Clear" class="btn btn-danger btn-block" />
-                        </div>
-</td>
-                </tr>
+                    <tr>
+                        <td>Street:</td>
+                        <td>
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>City:</td>
+                        <td>
+                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Country:</td>
+                        <td>
+                            @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="col-md-6">
+                                <input type="submit" value="Ship" class="btn btn-primary btn-block" />
+                            </div>
+                            <div class="col-md-6">
+                                <input type="reset" value="Clear" class="btn btn-danger btn-block" />
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

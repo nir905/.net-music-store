@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Vladi2.Models.Disc>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create","AdminDisc",new {@class="btn btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscAdded)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SongsAmount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                <div class="disc-img" style="background-image: url('CD_Images/@item.PictureUrl')"></div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SongsAmount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.DiscID}) |
+                @Html.ActionLink("View", "ViewDisc", "Store", new { id = item.DiscID }, null) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.DiscID},new { onclick = "return confirm('Are you sure?');" })
+            </td>
+        </tr>
+    }
+
+</table>
