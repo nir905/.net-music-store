@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Security.Application;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -30,6 +31,14 @@ namespace Vladi2.Controllers
         [HttpPost]
         public ActionResult Index(User user, HttpPostedFileBase file)
         {
+            user.FirstName = Sanitizer.GetSafeHtmlFragment(user.FirstName);
+            user.LastName = Sanitizer.GetSafeHtmlFragment(user.LastName);
+            user.Email = Sanitizer.GetSafeHtmlFragment(user.Email);
+            user.Phone = Sanitizer.GetSafeHtmlFragment(user.Phone);
+            user.PictureUrl = Sanitizer.GetSafeHtmlFragment(user.PictureUrl);
+            user.UserName = Sanitizer.GetSafeHtmlFragment(user.UserName);
+            user.Password = Sanitizer.GetSafeHtmlFragment(user.Password);
+        
             int permittedSizeInBytes = 4000000;//4mb
             string path = "";
             string connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));

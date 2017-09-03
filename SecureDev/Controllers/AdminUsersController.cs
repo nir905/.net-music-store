@@ -11,7 +11,7 @@ using Vladi2.Models;
 namespace Vladi2.Controllers
 {
     [AuthAttr(OnlyAdmin = true)]
-    public class AdminUsersController : Controller
+    public class AdminUsersController : BaseController
     {
         // GET: AdminUsers
         public ActionResult Index()

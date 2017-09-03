@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Vladi2.App_Start;
 using Vladi2.Models;
+using Microsoft.Security.Application;
 
 namespace Vladi2.Controllers
 {
@@ -22,6 +23,13 @@ namespace Vladi2.Controllers
         [HttpPost]
         public ActionResult Index(User user, HttpPostedFileBase file)
         {
+            user.FirstName = Sanitizer.GetSafeHtmlFragment(user.FirstName);
+            user.LastName = Sanitizer.GetSafeHtmlFragment(user.LastName);
+            user.Email = Sanitizer.GetSafeHtmlFragment(user.Email);
+            user.Phone = Sanitizer.GetSafeHtmlFragment(user.Phone);
+            user.PictureUrl = Sanitizer.GetSafeHtmlFragment(user.PictureUrl);
+            
+
             int permittedSizeInBytes = 4000000;//4mb
             string path = "";
 

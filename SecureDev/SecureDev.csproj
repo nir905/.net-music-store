@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AdminDiscController.cs" />
     <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\BuisnessInformationController.cs" />
+    <Compile Include="Controllers\AdminCategoriesController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
