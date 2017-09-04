@@ -13,7 +13,7 @@
        <h2>@Model.Title</h2>
     <div class="container">
         <div class="col-md-offset-11">
-            <a href="#Add"><span class="glyphicon glyphicon-plus"></span>New Comment</a>
+            <a href="#Add" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>New Comment</a>
         </div>
 
         @for (int i = 1; i <= Model.Comments.Count; ++i)
@@ -54,6 +54,7 @@
         }
         @using (Html.BeginForm("addComment", "Forum", FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             @Html.EditorFor(model => model.newComment.Text, new { htmlAttributes = new { @class = "area" } })
             @Html.HiddenFor(model => model.TopicID)
             <div class="row">

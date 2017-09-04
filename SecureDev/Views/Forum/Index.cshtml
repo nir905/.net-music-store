@@ -16,9 +16,9 @@
     <h2>Forum</h2>
 
     <p class="createTopic">
-        @Html.ActionLink("Add Topic", "createNewTopic", "Forum")
+        @Html.ActionLink("Add Topic", "createNewTopic", "Forum", new { @class = "btn btn-primary" })
     </p>
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-inverse">
             <tr>
                 <th>Topic</th>

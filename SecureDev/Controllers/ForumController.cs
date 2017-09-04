@@ -118,6 +118,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult addComment(Topic topic)
         {
 
@@ -152,6 +153,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult addTopic(Topic topic)
         {
             topic.Title = Sanitizer.GetSafeHtmlFragment(topic.Title);

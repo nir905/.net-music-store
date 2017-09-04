@@ -68,6 +68,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ShipCart(CartVM cart)
         {
             try

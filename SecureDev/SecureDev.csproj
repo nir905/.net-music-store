@@ -150,7 +150,6 @@
     <Compile Include="Controllers\AdminUsersController.cs" />
     <Compile Include="Controllers\BuisnessInformationController.cs" />
     <Compile Include="Controllers\AdminCategoriesController.cs" />
-    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Filter\AuthAttr.cs" />
@@ -232,6 +231,7 @@
     <Content Include="Views\AdminDisc\Index.cshtml" />
     <Content Include="Views\AdminDisc\Create.cshtml" />
     <Content Include="Views\AdminDisc\Edit.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

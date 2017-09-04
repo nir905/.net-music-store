@@ -21,6 +21,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(User user, HttpPostedFileBase file)
         {
             user.FirstName = Sanitizer.GetSafeHtmlFragment(user.FirstName);

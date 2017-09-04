@@ -22,7 +22,9 @@ namespace Vladi2.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(User user)
         {
             user.UserName = Sanitizer.GetSafeHtmlFragment(user.UserName);

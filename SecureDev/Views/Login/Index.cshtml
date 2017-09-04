@@ -16,7 +16,7 @@
 <body>
     @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "box-form" }))
     {
-        @Html.AntiForgeryToken() //check if needed
+        @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
             <h4>Login</h4>

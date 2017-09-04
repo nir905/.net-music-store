@@ -14,6 +14,7 @@
 }
 @using (Html.BeginForm("ShipCart", "Cart", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <div class="col-md-8">
         <table class="table table-striped table-responsive">
             <tr>

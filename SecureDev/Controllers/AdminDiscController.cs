@@ -81,6 +81,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Disc disc, HttpPostedFileBase file)
         {
             bool isValid = ValidForm(disc, file);
@@ -177,6 +178,7 @@ namespace Vladi2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Disc disc, HttpPostedFileBase file)
         {
             bool isValid = ValidForm(disc, file);

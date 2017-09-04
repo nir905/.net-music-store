@@ -49,6 +49,7 @@ namespace Vladi2.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult changeUsersPrivileges(List<User> usersList)
         {
             List<string> checkedUsers = new List<string>();

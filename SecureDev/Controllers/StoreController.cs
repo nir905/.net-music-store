@@ -72,6 +72,7 @@ namespace Vladi2.Controllers
             }
             return View(list);
         }
+
         public ActionResult ViewDisc(int id,int msgCode=-1)
         {
             switch (msgCode)
@@ -116,7 +117,9 @@ namespace Vladi2.Controllers
             }
             return new HttpNotFoundResult("Disc Not Found");
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddToCart(int DiscID, int number)
         {
             try

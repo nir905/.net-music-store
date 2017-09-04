@@ -26,6 +26,8 @@
         <div class="col-sm-4 col-md-3 add-to-cart">
             @using (Html.BeginForm("AddToCart", "Store", FormMethod.Post, new { @onsubmit = "return checkform()" }))
             {
+                @Html.AntiForgeryToken()
+
                 <span>QYY</span>
                 <div class="pick-number">
                     <input type="button" class="box-number action down" value="-" />
