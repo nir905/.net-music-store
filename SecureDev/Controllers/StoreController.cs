@@ -124,7 +124,7 @@ namespace Vladi2.Controllers
         {
             try
             {
-                int LastDiscId = Convert.ToInt32(HttpContext.Request.Headers["Referer"].Split('/')[5].Split('?')[0]);
+                int LastDiscId = Convert.ToInt32(HttpContext.Request.Headers["Referer"].Split('/')[5].Split('?')[0]);//get the disc id from referer
                 if (LastDiscId == DiscID)
                 {
                     if(number<1 || number>10)

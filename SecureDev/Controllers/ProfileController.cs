@@ -8,9 +8,9 @@ using Vladi2.Models;
 
 namespace Vladi2.Controllers
 {
+    [AuthAttr]
     public class ProfileController : BaseController
     {
-        [AuthAttr]
         public ActionResult Index()
         {
             return View((User)Session["myUser"]);

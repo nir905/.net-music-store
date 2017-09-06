@@ -45,6 +45,7 @@ namespace Vladi2.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
+            HttpContext.Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId") { Expires = DateTime.Now.AddDays(-1) });
             return RedirectToAction("Index", "Login");
         }
     }
