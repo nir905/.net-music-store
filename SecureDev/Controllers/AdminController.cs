@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vladi2.App_Start;
+using Vladi2.Helpers;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
@@ -18,57 +19,70 @@ namespace Vladi2.Controllers
             List<Disc> discsList = new List<Disc>();
             List<User> usersList = new List<User>();
             List<Category> catsList = new List<Category>();
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand discCommand = new SQLiteCommand(@"select name, artist from Disc order by datetime(added, 'localtime') desc LIMIT 5", m_dbConnection);
-                using (SQLiteDataReader reader = discCommand.ExecuteReader())
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
                 {
-                    while (reader.Read())
+                    m_dbConnection.Open();
+                    SQLiteCommand discCommand = new SQLiteCommand(@"select name, artist from Disc order by datetime(added, 'localtime') desc LIMIT 5", m_dbConnection);
+                    using (SQLiteDataReader reader = discCommand.ExecuteReader())
                     {
-                        discsList.Add(new Disc()
+                        while (reader.Read())
                         {
-                            Name = reader["name"].ToString(),
-                            Artist = reader["artist"].ToString(),
+                            discsList.Add(new Disc()
+                            {
+                                Name = reader["name"].ToString(),
+                                Artist = reader["artist"].ToString(),
 
-                        });
+                            });
+                        }
+                    }
+
+                    SQLiteCommand usersCommand = new SQLiteCommand(@"select firstname, lastname from Users order by id desc LIMIT 5", m_dbConnection);
+                    using (SQLiteDataReader reader = usersCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            usersList.Add(new User()
+                            {
+                                FirstName = reader["firstname"].ToString(),
+                                LastName = reader["lastname"].ToString(),
+
+                            });
+                        }
+                    }
+
+                    SQLiteCommand catsCommand = new SQLiteCommand(@"select categoryName from category order by categoryid desc LIMIT 5", m_dbConnection);
+                    using (SQLiteDataReader reader = catsCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            catsList.Add(new Category()
+                            {
+                                CategoryName = reader["categoryName"].ToString(),
+
+                            });
+                        }
                     }
                 }
-
-                SQLiteCommand usersCommand = new SQLiteCommand(@"select firstname, lastname from Users order by id desc LIMIT 5", m_dbConnection);
-                using (SQLiteDataReader reader = usersCommand.ExecuteReader())
+                return View(new AdminVM()
                 {
-                    while (reader.Read())
-                    {
-                        usersList.Add(new User()
-                        {
-                            FirstName = reader["firstname"].ToString(),
-                            LastName = reader["lastname"].ToString(),
-
-                        });
-                    }
-                }
-
-                SQLiteCommand catsCommand = new SQLiteCommand(@"select categoryName from category order by categoryid desc LIMIT 5", m_dbConnection);
-                using (SQLiteDataReader reader = catsCommand.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        catsList.Add(new Category()
-                        {
-                            CategoryName = reader["categoryName"].ToString(),
-
-                        });
-                    }
-                }
+                    Discs = discsList,
+                    Users = usersList,
+                    Categories = catsList
+                });
             }
-            return View(new AdminVM()
+            catch (SQLiteException)
             {
-                Discs = discsList,
-                Users = usersList,
-                Categories = catsList
-            });
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vladi2.App_Start;
+using Vladi2.Helpers;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
@@ -16,30 +17,47 @@ namespace Vladi2.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.FirstName = (Session["myUser"] as User).FirstName;
-            List<Disc> list = new List<Disc>();
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                using (SQLiteCommand lastCdCommand = new SQLiteCommand("select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc INNER JOIN Category on Category.categoryid = Disc.categoryid order by datetime(added, 'localtime') desc LIMIT 4", m_dbConnection))
-                using (SQLiteDataReader reader = lastCdCommand.ExecuteReader())
+                ViewBag.FirstName = (Session["myUser"] as User).FirstName;
+                List<Disc> list = new List<Disc>();
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
                 {
-                    while (reader.Read())
+                    m_dbConnection.Open();
+                    using (
+                        SQLiteCommand lastCdCommand =
+                            new SQLiteCommand(
+                                "select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc INNER JOIN Category on Category.categoryid = Disc.categoryid order by datetime(added, 'localtime') desc LIMIT 4",
+                                m_dbConnection))
+                    using (SQLiteDataReader reader = lastCdCommand.ExecuteReader())
                     {
-                        list.Add(new Disc()
+                        while (reader.Read())
                         {
-                            DiscID = int.Parse(reader["discid"].ToString()),
-                            Name =  reader["name"].ToString(),
-                            Artist = reader["artist"].ToString(),
-                            Category = new Category() { CategoryName = reader["categoryname"].ToString() },
-                            PictureUrl = reader["pictureurl"].ToString(),
-                            Price = float.Parse(reader["price"].ToString())
-                        });
+                            list.Add(new Disc()
+                            {
+                                DiscID = int.Parse(reader["discid"].ToString()),
+                                Name = reader["name"].ToString(),
+                                Artist = reader["artist"].ToString(),
+                                Category = new Category() {CategoryName = reader["categoryname"].ToString()},
+                                PictureUrl = reader["pictureurl"].ToString(),
+                                Price = float.Parse(reader["price"].ToString())
+                            });
+                        }
                     }
                 }
+                return View(list);
             }
-            return View(list);
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
         }
 
         public ActionResult Logout()

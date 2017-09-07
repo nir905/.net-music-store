@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Security.Application;
 using Vladi2.App_Start;
+using Vladi2.Helpers;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
@@ -19,58 +20,72 @@ namespace Vladi2.Controllers
             ViewBag.Search = q;
             List<Disc> list = new List<Disc>();
             List<Category> categories = new List<Category>();
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand storeCdCommand;
-                if (q == null)
-                    storeCdCommand =
-                        new SQLiteCommand(
-                            @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc 
-                                INNER JOIN Category on Category.categoryid = Disc.categoryid order by datetime(added, 'localtime') desc",
-                            m_dbConnection);
-                else
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
                 {
-                    storeCdCommand =
-                        new SQLiteCommand(
-                            @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc
+                    m_dbConnection.Open();
+                    SQLiteCommand storeCdCommand;
+                    if (q == null)
+                        storeCdCommand =
+                            new SQLiteCommand(
+                                @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc 
+                                INNER JOIN Category on Category.categoryid = Disc.categoryid order by datetime(added, 'localtime') desc",
+                                m_dbConnection);
+                    else
+                    {
+                        storeCdCommand =
+                            new SQLiteCommand(
+                                @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price from Disc
                                 INNER JOIN Category on Category.categoryid = Disc.categoryid
                                 where name like '%'||@q||'%' or artist like '%'||@q||'%' or categoryname like '%'||@q||'%'
                                 order by datetime(added, 'localtime') desc",
-                            m_dbConnection);
-                    storeCdCommand.Parameters.Add(new SQLiteParameter("q", q));
-                }
-                using (SQLiteDataReader reader = storeCdCommand.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        list.Add(new Disc()
-                        {
-                            DiscID = int.Parse(reader["discid"].ToString()),
-                            Name = reader["name"].ToString(),
-                            Artist = reader["artist"].ToString(),
-                            Category = new Category() { CategoryName = reader["categoryname"].ToString() },
-                            PictureUrl = reader["pictureurl"].ToString(),
-                            Price = float.Parse(reader["price"].ToString())
-                        });
+                                m_dbConnection);
+                        storeCdCommand.Parameters.Add(new SQLiteParameter("q", q));
                     }
-                }
+                    using (SQLiteDataReader reader = storeCdCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new Disc()
+                            {
+                                DiscID = int.Parse(reader["discid"].ToString()),
+                                Name = reader["name"].ToString(),
+                                Artist = reader["artist"].ToString(),
+                                Category = new Category() {CategoryName = reader["categoryname"].ToString()},
+                                PictureUrl = reader["pictureurl"].ToString(),
+                                Price = float.Parse(reader["price"].ToString())
+                            });
+                        }
+                    }
 
-                SQLiteCommand categoriesCommand = new SQLiteCommand("select categoryid, categoryName from Category", m_dbConnection);
-                using (SQLiteDataReader reader = categoriesCommand.ExecuteReader())
-                {
-                    while (reader.Read())
+                    SQLiteCommand categoriesCommand = new SQLiteCommand(
+                        "select categoryid, categoryName from Category", m_dbConnection);
+                    using (SQLiteDataReader reader = categoriesCommand.ExecuteReader())
                     {
-                        categories.Add(new Category()
+                        while (reader.Read())
                         {
-                           CategoryName = reader["categoryName"].ToString()
-                        });
+                            categories.Add(new Category()
+                            {
+                                CategoryName = reader["categoryName"].ToString()
+                            });
+                        }
                     }
+                    ViewBag.Categories = categories;
                 }
-                ViewBag.Categories = categories;
+                return View(list);
             }
-            return View(list);
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
         }
 
         public ActionResult ViewDisc(int id,int msgCode=-1)
@@ -86,36 +101,49 @@ namespace Vladi2.Controllers
                     ViewBag.msgType = "alert-success";
                     break;
             }
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand discCdCommand =
-                    new SQLiteCommand(
-                        @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price,added,duration,songsamount from Disc 
-                                INNER JOIN Category on Category.categoryid = Disc.categoryid where discid=@discid",
-                        m_dbConnection);
-                discCdCommand.Parameters.Add(new SQLiteParameter("discid", id));
-                using (SQLiteDataReader reader = discCdCommand.ExecuteReader())
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
                 {
-                    while (reader.Read())
+                    m_dbConnection.Open();
+                    SQLiteCommand discCdCommand =
+                        new SQLiteCommand(
+                            @"select Disc.discID,Disc.name,Disc.artist,Category.categoryName,Disc.pictureUrl,Disc.price,added,duration,songsamount from Disc 
+                                INNER JOIN Category on Category.categoryid = Disc.categoryid where discid=@discid",
+                            m_dbConnection);
+                    discCdCommand.Parameters.Add(new SQLiteParameter("discid", id));
+                    using (SQLiteDataReader reader = discCdCommand.ExecuteReader())
                     {
-                        return View(new Disc()
+                        while (reader.Read())
                         {
-                            DiscID = int.Parse(reader["discid"].ToString()),
-                            Name = reader["name"].ToString(),
-                            Artist = reader["artist"].ToString(),
-                            Category = new Category() { CategoryName = reader["categoryname"].ToString() },
-                            PictureUrl = reader["pictureurl"].ToString(),
-                            Price = float.Parse(reader["price"].ToString()),
-                            DiscAdded = Convert.ToDateTime(reader["added"].ToString()),
-                            Duration = reader["duration"].ToString(),
-                            SongsAmount = int.Parse(reader["songsamount"].ToString())
-                        });
+                            return View(new Disc()
+                            {
+                                DiscID = int.Parse(reader["discid"].ToString()),
+                                Name = reader["name"].ToString(),
+                                Artist = reader["artist"].ToString(),
+                                Category = new Category() {CategoryName = reader["categoryname"].ToString()},
+                                PictureUrl = reader["pictureurl"].ToString(),
+                                Price = float.Parse(reader["price"].ToString()),
+                                DiscAdded = Convert.ToDateTime(reader["added"].ToString()),
+                                Duration = reader["duration"].ToString(),
+                                SongsAmount = int.Parse(reader["songsamount"].ToString())
+                            });
+                        }
                     }
                 }
+                throw new HttpException(404,"Disc Not Found");
             }
-            return new HttpNotFoundResult("Disc Not Found");
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
         }
 
         [HttpPost]
@@ -139,14 +167,21 @@ namespace Vladi2.Controllers
                         storeCdCommand.Parameters.Add(new SQLiteParameter("discid", DiscID));
                         storeCdCommand.Parameters.Add(new SQLiteParameter("amount", number));
                         storeCdCommand.ExecuteNonQuery();
+                        return RedirectToAction("ViewDisc", "Store", new { id = DiscID, msgCode = 1 });
                     }
                 }
+                return RedirectToAction("ViewDisc", "Store", new { id = DiscID, msgCode = 0 });//Problem insert to cart
             }
-            catch(Exception ex)
+            catch (SQLiteException)
             {
-                return RedirectToAction("ViewDisc", "Store" , new { id = DiscID, msgCode = 0 });
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
             }
-            return RedirectToAction("ViewDisc", "Store", new { id = DiscID, msgCode = 1 });
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
         }
     }
 }

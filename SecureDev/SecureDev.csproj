@@ -167,7 +167,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\UserValidation.cs" />
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Models\AdminVM.cs" />
     <Compile Include="Models\CartVM.cs" />
     <Compile Include="Models\Category.cs" />
@@ -224,7 +224,6 @@
     <Content Include="Views\Cart\Success.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\History\Index.cshtml" />
     <Content Include="Views\Forum\addTopic.cshtml" />
     <Content Include="Views\BuisnessInformation\Index.cshtml" />
     <Content Include="Views\AdminUsers\Index.cshtml" />

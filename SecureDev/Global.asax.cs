@@ -24,7 +24,6 @@ namespace Vladi2
         void Application_Error(Object sender, EventArgs e)
         {
             Exception exception = Server.GetLastError();//Can user Logger
-            LogError(exception);
             string msg = (Session["myUser"] != null && (Session["myUser"] as User).IsAdmin) ? exception.Message : "";//for admin only!
             HttpException httpException = exception as HttpException;
             Server.ClearError();
@@ -50,32 +49,6 @@ namespace Vladi2
             else
             {
                 Response.Redirect(String.Format(@"~/Error/Index?msg={0}", HttpUtility.UrlEncode(msg)));
-            }
-        }
-
-        public void LogError(Exception exception)
-        {
-            StringBuilder builder = new StringBuilder();
-            builder
-                .AppendLine("----------")
-                .AppendLine(DateTime.Now.ToString())
-                .AppendFormat("Source:\t{0}", exception.Source)
-                .AppendLine()
-                .AppendFormat("Target:\t{0}", exception.TargetSite)
-                .AppendLine()
-                .AppendFormat("Type:\t{0}", exception.GetType().Name)
-                .AppendLine()
-                .AppendFormat("Message:\t{0}", exception.Message)
-                .AppendLine()
-                .AppendFormat("Stack:\t{0}", exception.StackTrace)
-                .AppendLine();
-
-            string filePath = Server.MapPath("~/App_Data/Error.log");
-
-            using (StreamWriter writer = File.AppendText(filePath))
-            {
-                writer.Write(builder.ToString());
-                writer.Flush();
             }
         }
     }

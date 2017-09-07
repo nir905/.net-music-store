@@ -24,6 +24,9 @@ namespace Vladi2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(User user, HttpPostedFileBase file)
         {
+            //TODO: user.UpdateProfile(file);
+            //lion&maria - I Moved all the code from UserValidation to User. just need to call <user.UpdateProfile(file)> here and make switch-case for all errors
+
             user.FirstName = Sanitizer.GetSafeHtmlFragment(user.FirstName);
             user.LastName = Sanitizer.GetSafeHtmlFragment(user.LastName);
             user.Email = Sanitizer.GetSafeHtmlFragment(user.Email);
