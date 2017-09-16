@@ -1,0 +1,47 @@
+﻿@model List<Vladi2.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Categories</h2>
+
+@if (ViewBag.catErr != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.catErr
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model[0].CategoryName)
+        </th>
+        <th></th>
+    </tr>
+
+@using (Html.BeginForm("updateCategories", "AdminCategories", FormMethod.Post, new { @class = "box-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    for (int i = 0; i < Model.Count; ++i)
+    {
+        <tr>
+            <td>
+                @Html.EditorFor(modelItem => modelItem[i].CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.HiddenFor(modelItem => modelItem[i].CategoryID)
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <input type="submit" value="Update" class="btn btn-lg btn-primary btn-block" />
+        </td>
+    </tr>
+}
+</table>

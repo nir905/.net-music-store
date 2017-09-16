@@ -32,7 +32,7 @@ namespace Vladi2.Controllers
                 UserResult result = user.Login();
                 if(result.Status==UserResult.Statuses.Success)
                     return RedirectToAction("Index", "Home");
-                ViewBag.ErrorMsg = result;
+                ViewBag.ErrorMsg = result.Message;
                 return View();
             }
             catch (Exception exception)
