@@ -15,14 +15,14 @@
 }
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "addCategory", "AdminCategories", null, new { @class = "btn btn-info" })
 </p>
+
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model[0].CategoryName)
         </th>
-        <th></th>
     </tr>
 
 @using (Html.BeginForm("updateCategories", "AdminCategories", FormMethod.Post, new { @class = "box-form" }))
@@ -38,6 +38,9 @@
             </td>
         </tr>
     }
+
+    
+
     <tr>
         <td>
             <input type="submit" value="Update" class="btn btn-lg btn-primary btn-block" />
