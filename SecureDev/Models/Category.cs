@@ -17,8 +17,8 @@ namespace Vladi2.Models
             Regex regex;
             Match match;
 
-            if (this.CategoryID < 1)
-                return false;
+            //if (this.CategoryID < 1)
+            //    return false;
 
             this.CategoryName = Sanitizer.GetSafeHtmlFragment(this.CategoryName);
             if (String.IsNullOrEmpty(this.CategoryName))
@@ -35,5 +35,12 @@ namespace Vladi2.Models
 
             return true;
         }
+    }
+
+    public class CategoryVM
+    {
+        public List<Category> categories { get; set; }
+
+        public Category newCategory { get; set; }
     }
 }

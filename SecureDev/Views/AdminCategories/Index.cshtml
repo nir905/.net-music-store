@@ -1,4 +1,4 @@
-﻿@model List<Vladi2.Models.Category>
+﻿@model Vladi2.Models.CategoryVM
 
 @{
     ViewBag.Title = "Index";
@@ -14,11 +14,57 @@
     </div>
 }
 
-<p>
-    @Html.ActionLink("Create New", "addCategory", "AdminCategories", null, new { @class = "btn btn-info" })
-</p>
 
-<table class="table">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Add Category
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    @using (Html.BeginForm("addCategory", "AdminCategories", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="col-md-7">
+                            @Html.EditorFor(modelItem => modelItem.newCategory.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-md-4">
+                            <input type="submit" value="Create New" class="btn btn-info" />
+                        </div>
+                  }
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Edit Category
+            </div>
+
+            <div class="panel-body">
+                @using (Html.BeginForm("updateCategories", "AdminCategories", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    for (int i = 0; i < Model.categories.Count; ++i)
+                    {
+                        @Html.EditorFor(modelItem => modelItem.categories[i].CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(modelItem => modelItem.categories[i].CategoryID)
+                        <br />
+                    }
+
+
+                    <input type="submit" value="Update" class="btn btn-info" />
+
+                }
+            </div>
+
+        </div>
+
+@*<p>
+    
+</p>*@
+
+@*<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model[0].CategoryName)
@@ -47,4 +93,11 @@
         </td>
     </tr>
 }
-</table>
+</table>*@
+
+<style>
+    .container {
+        max-width: 550px;
+    }
+
+</style>
