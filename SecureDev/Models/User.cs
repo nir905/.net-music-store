@@ -333,6 +333,58 @@ namespace Vladi2.Models
             return result;
         }
 
+        public static void changeUsersPrivileges(List<User> usersList)
+        {
+            List<string> checkedUsers = new List<string>();
+
+            for (var i = 0; i < usersList.Count(); i++)
+            {
+                if (usersList[i].IsAdmin)
+                {
+                    usersList[i].UserName = Sanitizer.GetSafeHtmlFragment(usersList[i].UserName);
+                    checkedUsers.Add("@name" + i);
+                }
+            }
+
+            try
+            {
+                string param = String.Join(",", checkedUsers.ToArray());
+
+                var connectionString = string.Format("DataSource={0}", HttpContext.Current.Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+                    SQLiteCommand updateTempPrivilegesCommand = new SQLiteCommand(@"UPDATE Users set isAdmin = 0
+                                                                                WHERE userName != @user", m_dbConnection);
+
+                    updateTempPrivilegesCommand.Parameters.Add(new SQLiteParameter("user", (HttpContext.Current.Session["myUser"] as User).UserName));
+
+                    updateTempPrivilegesCommand.ExecuteNonQuery();
+
+                    SQLiteCommand updatePrivilegesCommand = new SQLiteCommand(@"UPDATE Users set isAdmin = 1
+                                                                            WHERE userName IN (" + param + ")", m_dbConnection);
+                    for (int i = 0; i < usersList.Count(); i++)
+                    {
+                        if (usersList[i].IsAdmin)
+                        {
+                            updatePrivilegesCommand.Parameters.Add(new SQLiteParameter("name" + i, usersList[i].UserName));
+                        }
+                    }
+
+                    updatePrivilegesCommand.ExecuteNonQuery();
+                }
+            }
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
+        }
 
         public static string Sha256(string password)
         {

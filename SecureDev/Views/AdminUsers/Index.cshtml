@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     <table class="table">
         <tr>
-            <th width="1"></th>
+            <th width="1">#</th>
             <th>
                 @Html.DisplayNameFor(model => model[0].UserName)
             </th>
@@ -31,8 +31,6 @@
             <th>
                 @Html.DisplayNameFor(model => model[0].IsAdmin)
             </th>
-
-            <th></th>
         </tr>
 
     @for (var i = 0; i < Model.Count; i++)
@@ -43,7 +41,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => modelItem[i].UserName)
-                @*@Html.EditorFor(modelItem => modelItem[i].UserName, new { htmlAttributes = new { @type="textbox", @class= "labelLike", @readonly= "true" } })*@
                 @Html.HiddenFor(modelItem => modelItem[i].UserName)
             </td>
             <td>
@@ -58,37 +55,30 @@
             <td>
                 @Html.DisplayFor(modelItem => modelItem[i].Phone)
             </td>
-            <td>@*make sure that Admin doesnt edit its own priviliges*@
-                @if (Model[i].UserName != (Session["myUser"] as Vladi2.Models.User).UserName)
-                {
-                  @Html.CheckBoxFor(modelItem => modelItem[i].IsAdmin)
-                }
-                else
-                {
-                    @Html.EditorFor(modelItem => modelItem[i].IsAdmin, new { htmlAttributes = new { @type = "checkbox", @onclick = "return false" } })
-                }
+            <td>
+                @Html.CheckBoxFor(modelItem => modelItem[i].IsAdmin)
             </td>
 
         </tr>
     }
-        <tr><td  colspan="2">
+        </table>
+
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-1">
             <input type="submit" value="Update" class="btn btn-primary btn-block" />
-            </div>
         </div>
-</td></tr>
-    </table>
+    </div>
+
 }
 
 <style>
     .table > tbody > tr > td {
         vertical-align: middle;
-        
+        text-align:center;
     }
 
-    .labelLike {
-        background: rgba(0,0,0,0);
-        border: none;
+    .table > tbody > tr > th {
+        vertical-align: middle;
+        text-align: center;
     }
 </style>
