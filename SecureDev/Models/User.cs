@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Microsoft.Security.Application;
 using Vladi2.Helpers;
+using System.Security.Cryptography;
 
 namespace Vladi2.Models
 {
@@ -38,7 +39,7 @@ namespace Vladi2.Models
                 using (var m_dbConnection = new SQLiteConnection(connectionString))
                 {
                     m_dbConnection.Open();
-                    using (SQLiteCommand LoginCommand = new SQLiteCommand("SELECT id,username,password,firstname,lastname,isadmin,logincounts,lastattempt,email,phone,pictureUrl FROM Users Where userName = @username", m_dbConnection))
+                    using (SQLiteCommand LoginCommand = new SQLiteCommand("SELECT id,username,password,salt,firstname,lastname,isadmin,logincounts,lastattempt,email,phone,pictureUrl FROM Users Where userName = @username", m_dbConnection))
                     {
                         LoginCommand.Parameters.Add(new SQLiteParameter("username", this.UserName));
                         using (SQLiteDataReader reader = LoginCommand.ExecuteReader())
@@ -60,9 +61,11 @@ namespace Vladi2.Models
                                     PictureUrl = reader["pictureUrl"].ToString()
                                 };
 
+                                string salt = reader["salt"].ToString();
+
                                 if (myUser.CountsAttempts < 5 || (DateTime.Now - myUser.LastAttempt).TotalMinutes >= 20)
                                 {
-                                    if (Sha256(this.Password) == myUser.Password) //SHA256
+                                    if (Sha256(this.Password + salt) == myUser.Password) //SHA256
                                     {
                                         //clear unseccess attempts
                                         using (SQLiteCommand clearUnseccess = new SQLiteCommand("update users set logincounts = 0, lastattempt = datetime('now', 'localtime') where username = @username", m_dbConnection))
@@ -236,7 +239,7 @@ namespace Vladi2.Models
                     this.PictureUrl = (HttpContext.Current.Session["myUser"] as User).PictureUrl;
             }
 
-            this.Password = Sha256(this.Password);
+            //this.Password = Sha256(this.Password);
             return new UserResult(UserResult.Statuses.Success, "");
         }
 
@@ -252,10 +255,14 @@ namespace Vladi2.Models
                     using (var m_dbConnection = new SQLiteConnection(connectionString))
                     {
                         m_dbConnection.Open();
-                        using (SQLiteCommand createUser = new SQLiteCommand("insert into users (userName, password, firstName, lastName, email, phone, pictureUrl, isAdmin, loginCounts, lastAttempt) values (@username, @password, @firstname, @lastname, @email, @phone, @pictureurl, 0, 0, datetime('now', 'localtime'))", m_dbConnection))
+                        using (SQLiteCommand createUser = new SQLiteCommand("insert into users (userName, password, salt, firstName, lastName, email, phone, pictureUrl, isAdmin, loginCounts, lastAttempt) values (@username, @password, @salt, @firstname, @lastname, @email, @phone, @pictureurl, 0, 0, datetime('now', 'localtime'))", m_dbConnection))
                         {
+                            string salt = GenerateRandomSalt();
+                            this.Password = Sha256(this.Password + salt);
+
                             createUser.Parameters.Add(new SQLiteParameter("username", this.UserName));
                             createUser.Parameters.Add(new SQLiteParameter("password", this.Password));
+                            createUser.Parameters.Add(new SQLiteParameter("salt", salt));
                             createUser.Parameters.Add(new SQLiteParameter("pictureurl", this.PictureUrl));
                             createUser.Parameters.Add(new SQLiteParameter("firstname", this.FirstName));
                             createUser.Parameters.Add(new SQLiteParameter("lastname", this.LastName));
@@ -336,6 +343,16 @@ namespace Vladi2.Models
                 hash += theByte.ToString("X2");
             return hash;
         }
+
+        public static string GenerateRandomSalt()
+        {
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+
+            var bytes = new Byte[32];
+            rng.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
+        }
+
     }
 
     //this class is for returning status of login,registration and edit profile
