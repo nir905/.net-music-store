@@ -11,7 +11,7 @@ using Vladi2.Models;
 namespace Vladi2.Controllers
 {
     [AuthAttr]
-    public class BuisnessInformationController : BaseController
+    public class MyOrdersController : BaseController
     {
         public ActionResult Index()
         {

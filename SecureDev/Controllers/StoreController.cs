@@ -152,8 +152,8 @@ namespace Vladi2.Controllers
         {
             try
             {
-                int LastDiscId = Convert.ToInt32(HttpContext.Request.Headers["Referer"].Split('/')[5].Split('?')[0]);//get the disc id from referer
-                if (LastDiscId == DiscID)
+                int LastDiscId = Convert.ToInt32(HttpContext.Request.Headers["Referer"].Split('/')[5].Split('?')[0]);
+                if (LastDiscId == DiscID)//check if user visited disc page (using referer flag)
                 {
                     if(number<1 || number>10)
                         return RedirectToAction("ViewDisc", "Store",new { id = DiscID, msgCode = 0});

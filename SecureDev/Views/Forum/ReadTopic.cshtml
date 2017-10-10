@@ -6,69 +6,64 @@
 }
 
 
-<head></head>
-
-<body>
-
-       <h2>@Model.Title</h2>
-    <div class="container">
-        <div class="col-md-offset-11">
-            <a href="#Add" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>New Comment</a>
-        </div>
-
-        @for (int i = 1; i <= Model.Comments.Count; ++i)
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="panel-title" style="padding-bottom: 15px;">
-                        <div class="pull-left">
-                            #@i
-                        </div>
-                        <div class="pull-right">
-                            @Model.Comments[i - 1].CommentTime
-                        </div>
-                    </div>
-                </div>
-                <div class="row panel-body">
-                    <div class="col-md-10">
-                        @Model.Comments[i - 1].Text
-                    </div>
-                    <div class="col-md-2" style="text-align:center;">
-                        <div class="well">
-                            <b>@Model.Comments[i - 1].CommentUser</b>
-                            <br />
-                            <div class="img-thumbnail user-icon" style="background-image: url('@Url.Content(Model.Comments[i - 1].pictureURL)')"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-        <div>
-            <h1 id="Add">Add Comment</h1>
-        </div>
-        @if (ViewBag.Err != null)
-        {
-            <div class="alert alert-danger" style="padding: 9px;">
-                @ViewBag.Err
-            </div>
-        }
-        @using (Html.BeginForm("addComment", "Forum", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.EditorFor(model => model.newComment.Text, new { htmlAttributes = new { @class = "area" } })
-            @Html.HiddenFor(model => model.TopicID)
-            <div class="row">
-                <div class="col-md-1">
-                    <input type="submit" value="Add" class="btn btn-primary small-btn" />
-                </div>
-
-                <div>
-                    <input type="reset" value="Clear" class="btn btn-danger small-btn" />
-                </div>
-           </div>
-        }
+<h2>@Model.Title</h2>
+<div class="container">
+    <div class="col-md-offset-11">
+        <a href="#Add" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>New Comment</a>
     </div>
-</body>
+
+    @for (int i = 1; i <= Model.Comments.Count; ++i)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title" style="padding-bottom: 15px;">
+                    <div class="pull-left">
+                        #@i
+                    </div>
+                    <div class="pull-right">
+                        @Model.Comments[i - 1].CommentTime
+                    </div>
+                </div>
+            </div>
+            <div class="row panel-body">
+                <div class="col-md-10">
+                    @Model.Comments[i - 1].Text
+                </div>
+                <div class="col-md-2" style="text-align:center;">
+                    <div class="well">
+                        <b>@Model.Comments[i - 1].CommentUser</b>
+                        <br />
+                        <div class="img-thumbnail user-icon" style="background-image: url('@Url.Content(Model.Comments[i - 1].pictureURL)')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div>
+        <h1 id="Add">Add Comment</h1>
+    </div>
+    @if (ViewBag.Err != null)
+    {
+        <div class="alert alert-danger" style="padding: 9px;">
+            @ViewBag.Err
+        </div>
+    }
+    @using (Html.BeginForm("addComment", "Forum", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.EditorFor(model => model.newComment.Text, new { htmlAttributes = new { @class = "area" } })
+        @Html.HiddenFor(model => model.TopicID)
+        <div class="row">
+            <div class="col-md-1">
+                <input type="submit" value="Add" class="btn btn-primary small-btn" />
+            </div>
+
+            <div>
+                <input type="reset" value="Clear" class="btn btn-danger small-btn" />
+            </div>
+        </div>
+    }
+</div>
 
 <style>
     .col-md-offset-11 {
@@ -76,8 +71,8 @@
         margin-bottom: 12px;
     }
 
-    textarea{
-        max-width:500px;
+    textarea {
+        max-width: 500px;
     }
 
     .area {
@@ -88,7 +83,7 @@
         margin-bottom: 10px;
     }
 
-    h1{
+    h1 {
         margin-bottom: 20px;
         margin-top: 40px;
     }
@@ -110,5 +105,4 @@
         background-color: #428bca;
         border-color: #ddd;
     }
-
 </style>

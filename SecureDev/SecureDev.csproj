@@ -148,7 +148,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminDiscController.cs" />
     <Compile Include="Controllers\AdminUsersController.cs" />
-    <Compile Include="Controllers\BuisnessInformationController.cs" />
+    <Compile Include="Controllers\MyOrdersController.cs" />
     <Compile Include="Controllers\AdminCategoriesController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -208,7 +208,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Sqlite\db.sqlite" />
@@ -225,7 +224,7 @@
     <Content Include="Views\Error\Error404.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Forum\addTopic.cshtml" />
-    <Content Include="Views\BuisnessInformation\Index.cshtml" />
+    <Content Include="Views\MyOrders\Index.cshtml" />
     <Content Include="Views\AdminUsers\Index.cshtml" />
     <Content Include="Views\AdminDisc\Index.cshtml" />
     <Content Include="Views\AdminDisc\Create.cshtml" />
