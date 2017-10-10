@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vladi2.App_Start;
+using Vladi2.Helpers;
 using Vladi2.Models;
 
 namespace Vladi2.Controllers
@@ -17,56 +18,55 @@ namespace Vladi2.Controllers
             List<Order> list = new List<Order>();
 
             var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
-            {
-                m_dbConnection.Open();
-                using (SQLiteCommand OrdersCommand = new SQLiteCommand(@"Select Disc.name, Disc.artist, Category.categoryName, Orders.orderTime, Disc.songsAmount, Disc.duration, Disc.price from Users inner join Orders on Users.id = Orders.userId inner join Disc on Disc.discID = Orders.discID inner join Category on Disc.categoryID = Category.categoryID where Orders.isBought = 1 and Users.id = @userID", m_dbConnection))
-                {
-                    OrdersCommand.Parameters.Add(new SQLiteParameter("userID", ((User)Session["myUser"]).UserID));
+            float totalPrice = 0;
 
-                    using (SQLiteDataReader reader = OrdersCommand.ExecuteReader())
+            try
+            {
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+                    using (SQLiteCommand OrdersCommand = new SQLiteCommand(@"SELECT Disc.name, Disc.artist, Disc.price, Disc.duration, Disc.songsAmount, Category.categoryName, Orders.orderTime, Orders.amount
+                                                                         FROM Disc INNER JOIN Category ON Disc.categoryID = Category.categoryID
+                                                                         INNER JOIN Orders ON Orders.discID = Disc.discID
+                                                                         WHERE Orders.isBought = 1 AND Orders.userId = @userID", m_dbConnection))
                     {
-                        while (reader.Read())
+                        OrdersCommand.Parameters.Add(new SQLiteParameter("userID", ((User)Session["myUser"]).UserID));
+
+                        using (SQLiteDataReader reader = OrdersCommand.ExecuteReader())
                         {
-                            list.Add(new Order()
+                            while (reader.Read())
                             {
-                                OrderTime = DateTime.Parse(reader["orderTime"].ToString()),
-                                Disc = new Disc()
+                                list.Add(new Order()
                                 {
-                                    Name = reader["name"].ToString(),
-                                    Artist = reader["artist"].ToString(),
-                                    Category = new Category() { CategoryName = reader["categoryName"].ToString() },
-                                    SongsAmount = int.Parse(reader["songsAmount"].ToString()),
-                                    Duration = reader["duration"].ToString(),
-                                    Price = float.Parse(reader["price"].ToString())
-                                }
-                            });
+                                    OrderTime = DateTime.Parse(reader["orderTime"].ToString()),
+                                    Disc = new Disc()
+                                    {
+                                        Name = reader["name"].ToString(),
+                                        Artist = reader["artist"].ToString(),
+                                        Category = new Category() { CategoryName = reader["categoryName"].ToString() },
+                                        SongsAmount = int.Parse(reader["songsAmount"].ToString()),
+                                        Duration = reader["duration"].ToString(),
+                                        Price = float.Parse(reader["price"].ToString())
+                                    }
+                                });
+                                totalPrice += int.Parse(reader["amount"].ToString()) * list.Last().Disc.Price;
+                            }
                         }
                     }
                 }
             }
-
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            catch(SQLiteException)
             {
-                m_dbConnection.Open();
-                using (SQLiteCommand SumCommand = new SQLiteCommand(@"Select Sum(Disc.price) as price from Disc inner join Orders on Disc.discID = Orders.discID where Orders.userid = @userID", m_dbConnection))
-                {
-                    SumCommand.Parameters.Add(new SQLiteParameter("userID", ((User)Session["myUser"]).UserID));
-
-                    using (SQLiteDataReader reader = SumCommand.ExecuteReader())
-                    {
-
-                        while (reader.Read())
-                        {
-
-                            var totalPrice = float.Parse(reader["price"].ToString());
-                            ViewBag.TotalPrice = totalPrice;
-
-                        }
-                    }
-
-                }
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
             }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
+
+            ViewBag.TotalPrice = totalPrice;
             return View(list);
         }
     }

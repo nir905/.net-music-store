@@ -7,6 +7,7 @@ using Vladi2.App_Start;
 using Vladi2.Models;
 using System.Data.SQLite;
 using Microsoft.Security.Application;
+using Vladi2.Helpers;
 
 namespace Vladi2.Controllers
 {
@@ -18,33 +19,46 @@ namespace Vladi2.Controllers
         {
             List<Topic> topics = new List<Topic>();
 
-
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand getTopicsCommand =
-                        new SQLiteCommand(
-                            @"SELECT Topic.TopicID, Topic.Title, Users.userName, Topic.PublishTime
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+                    SQLiteCommand getTopicsCommand =
+                            new SQLiteCommand(
+                                @"SELECT Topic.TopicID, Topic.Title, Users.userName, Topic.PublishTime
                               FROM Topic INNER JOIN Users ON Topic.UserID = Users.id 
                               ORDER BY Topic.TopicID DESC",
-                            m_dbConnection);
+                                m_dbConnection);
 
-                
-                using (SQLiteDataReader reader = getTopicsCommand.ExecuteReader())
-                {
-                    while (reader.Read())
+
+                    using (SQLiteDataReader reader = getTopicsCommand.ExecuteReader())
                     {
-                        topics.Add(new Topic()
+                        while (reader.Read())
                         {
-                            Author = reader["userName"].ToString(),
-                            Title = reader["Title"].ToString(),
-                            TopicTime = DateTime.Parse(reader["PublishTime"].ToString()),
-                            TopicID = int.Parse(reader["TopicID"].ToString())
-                        });
+                            topics.Add(new Topic()
+                            {
+                                Author = reader["userName"].ToString(),
+                                Title = reader["Title"].ToString(),
+                                TopicTime = DateTime.Parse(reader["PublishTime"].ToString()),
+                                TopicID = int.Parse(reader["TopicID"].ToString())
+                            });
+                        }
                     }
                 }
             }
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
+
 
             return View(topics);
         }
@@ -54,32 +68,42 @@ namespace Vladi2.Controllers
 
             List<Comment> comments = new List<Comment>();
             Topic topic = new Topic();
-         
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
-            {
-                m_dbConnection.Open();
+            topic.Comments = comments;
 
-                SQLiteCommand getTopicCommand =
-                        new SQLiteCommand(
-                            @"SELECT Topic.TopicID, Topic.Title, Users.userName, Topic.PublishTime
+            try
+            {
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+
+                    SQLiteCommand getTopicCommand =
+                            new SQLiteCommand(
+                                @"SELECT Topic.TopicID, Topic.Title, Users.userName, Topic.PublishTime
                               FROM Topic INNER JOIN Users ON Topic.UserID = Users.id
                               WHERE Topic.TopicID = @topicId",
-                            m_dbConnection);
+                                m_dbConnection);
 
 
-                getTopicCommand.Parameters.Add(new SQLiteParameter("topicId", topicID));
+                    getTopicCommand.Parameters.Add(new SQLiteParameter("topicId", topicID));
 
-                using (SQLiteDataReader reader = getTopicCommand.ExecuteReader())
-                {
-                    while (reader.Read())
+                    using (SQLiteDataReader reader = getTopicCommand.ExecuteReader())
                     {
-                        topic.Author = reader["userName"].ToString();
-                        topic.Title = reader["Title"].ToString();
-                        topic.TopicTime = DateTime.Parse(reader["PublishTime"].ToString());
-                        topic.TopicID = int.Parse(reader["TopicID"].ToString());
+                        //TopicID not found
+                        if (reader.HasRows == false)
+                        {
+                            Logger.WriteToLog("TopicID not found");
+                            throw new HttpException(404, "TopicID not found");
+                        }
+
+                        while (reader.Read())
+                        {
+                            topic.Author = reader["userName"].ToString();
+                            topic.Title = reader["Title"].ToString();
+                            topic.TopicTime = DateTime.Parse(reader["PublishTime"].ToString());
+                            topic.TopicID = int.Parse(reader["TopicID"].ToString());
+                        }
                     }
-                }
 
 
                     SQLiteCommand getCommentsCommand =
@@ -90,29 +114,40 @@ namespace Vladi2.Controllers
                               ORDER BY Comment.CommentTime",
                             m_dbConnection);
 
-                getCommentsCommand.Parameters.Add(new SQLiteParameter("topicId", topic.TopicID));
+                    getCommentsCommand.Parameters.Add(new SQLiteParameter("topicId", topic.TopicID));
 
-                using (SQLiteDataReader reader = getCommentsCommand.ExecuteReader())
-                {
-                    while (reader.Read())
+                    using (SQLiteDataReader reader = getCommentsCommand.ExecuteReader())
                     {
-                        comments.Add(new Comment()
+                        while (reader.Read())
                         {
-                            CommentTime = DateTime.Parse(reader["CommentTime"].ToString()),
-                            CommentUser = reader["userName"].ToString(),
-                            Text = reader["CommentText"].ToString(),
-                            pictureURL = reader["pictureUrl"].ToString()
-                        });
+                            comments.Add(new Comment()
+                            {
+                                CommentTime = DateTime.Parse(reader["CommentTime"].ToString()),
+                                CommentUser = reader["userName"].ToString(),
+                                Text = reader["CommentText"].ToString(),
+                                pictureURL = reader["pictureUrl"].ToString()
+                            });
+                        }
                     }
                 }
+
+
+
+                if (err == 1)
+                    ViewBag.Err = "Please fill a comment";
+                else
+                    ViewBag.Err = null;
             }
-
-            topic.Comments = comments;
-
-            if (err == 1)
-                ViewBag.Err = "Please fill a comment";
-            else
-                ViewBag.Err = null;
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
 
             return View(topic);
         }
@@ -130,24 +165,36 @@ namespace Vladi2.Controllers
                 return RedirectToAction("ReadTopic", "Forum", new { topic.TopicID, err });
             }
 
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand updateComment =
-                        new SQLiteCommand(
-                            @"INSERT INTO Comment (TopicID, UserID, CommentText, CommentTime)
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+                    SQLiteCommand updateComment =
+                            new SQLiteCommand(
+                                @"INSERT INTO Comment (TopicID, UserID, CommentText, CommentTime)
                               VALUES (@topicid, @userid, @commentText, @commentTime)",
-                            m_dbConnection);
+                                m_dbConnection);
 
-                updateComment.Parameters.Add(new SQLiteParameter("topicid", topic.TopicID));
-                updateComment.Parameters.Add(new SQLiteParameter("userid", (Session["myUser"] as User).UserID));
-                updateComment.Parameters.Add(new SQLiteParameter("commentText", topic.newComment.Text));
-                updateComment.Parameters.Add(new SQLiteParameter("commentTime", DateTime.Now));
+                    updateComment.Parameters.Add(new SQLiteParameter("topicid", topic.TopicID));
+                    updateComment.Parameters.Add(new SQLiteParameter("userid", (Session["myUser"] as User).UserID));
+                    updateComment.Parameters.Add(new SQLiteParameter("commentText", topic.newComment.Text));
+                    updateComment.Parameters.Add(new SQLiteParameter("commentTime", DateTime.Now));
 
-                updateComment.ExecuteNonQuery();
+                    updateComment.ExecuteNonQuery();
+                }
             }
-
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
 
             return RedirectToAction("ReadTopic", "Forum", new { topic.TopicID });
         }
@@ -171,27 +218,29 @@ namespace Vladi2.Controllers
                 return View(topic);
             }
 
-            var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
-            using (var m_dbConnection = new SQLiteConnection(connectionString))
+            try
             {
-                m_dbConnection.Open();
-                SQLiteCommand updateTopic =
-                        new SQLiteCommand(
-                            @"INSERT INTO Topic (UserID, Title, PublishTime)
+                var connectionString = string.Format("DataSource={0}", Server.MapPath(@"~\Sqlite\db.sqlite"));
+                using (var m_dbConnection = new SQLiteConnection(connectionString))
+                {
+                    m_dbConnection.Open();
+                    SQLiteCommand updateTopic =
+                            new SQLiteCommand(
+                                @"INSERT INTO Topic (UserID, Title, PublishTime)
                               VALUES (@userid, @title, @publishtime)",
-                            m_dbConnection);
+                                m_dbConnection);
 
-                updateTopic.Parameters.Add(new SQLiteParameter("userid", (Session["myUser"] as User).UserID));
-                updateTopic.Parameters.Add(new SQLiteParameter("title", topic.Title));
-                updateTopic.Parameters.Add(new SQLiteParameter("publishtime", DateTime.Now));
+                    updateTopic.Parameters.Add(new SQLiteParameter("userid", (Session["myUser"] as User).UserID));
+                    updateTopic.Parameters.Add(new SQLiteParameter("title", topic.Title));
+                    updateTopic.Parameters.Add(new SQLiteParameter("publishtime", DateTime.Now));
 
-                updateTopic.ExecuteNonQuery();
+                    updateTopic.ExecuteNonQuery();
 
-                SQLiteCommand getTopicID =
-                        new SQLiteCommand(
-                            @"SELECT MAX(TopicID) as lastTopic
+                    SQLiteCommand getTopicID =
+                            new SQLiteCommand(
+                                @"SELECT MAX(TopicID) as lastTopic
                               FROM Topic",
-                            m_dbConnection);
+                                m_dbConnection);
 
                     int lastTopic = int.Parse(getTopicID.ExecuteScalar().ToString());
 
@@ -209,9 +258,21 @@ namespace Vladi2.Controllers
                     updateComment.Parameters.Add(new SQLiteParameter("commentTime", DateTime.Now));
 
                     updateComment.ExecuteNonQuery();
-                
 
+
+                }
             }
+            catch (SQLiteException)
+            {
+                Logger.WriteToLog(Logger.SQLLiteMsg);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Logger.WriteToLog(exception);
+                throw;
+            }
+
             return RedirectToAction("Index", "Forum");
         }
 
