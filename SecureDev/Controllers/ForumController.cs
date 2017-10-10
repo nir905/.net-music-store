@@ -92,7 +92,6 @@ namespace Vladi2.Controllers
                         //TopicID not found
                         if (reader.HasRows == false)
                         {
-                            Logger.WriteToLog("TopicID not found");
                             throw new HttpException(404, "TopicID not found");
                         }
 

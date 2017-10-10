@@ -163,3 +163,13 @@ Stack:	   at Vladi2.Controllers.ForumController.ReadTopic(Int32 topicID, Int32 e
 ----------
 10/10/2017 13:32:54 by niravr at /Login
 Login Success
+----------
+10/10/2017 14:30:06 by lion at /Login
+Login Success
+----------
+10/10/2017 14:30:17 by lion at /Forum/ReadTopic
+Source:	Vladi2
+Target:	System.Web.Mvc.ActionResult ReadTopic(Int32, Int32)
+Type:	HttpException
+Message:	TopicID not found
+Stack:	   at Vladi2.Controllers.ForumController.ReadTopic(Int32 topicID, Int32 err) in D:\תואר ראשון\שנה ב\סמסטר קיץ\פיתוח מאובטח\securemvc\SecureDev\Controllers\ForumController.cs:line 95
